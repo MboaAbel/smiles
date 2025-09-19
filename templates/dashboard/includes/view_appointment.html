@@ -1,0 +1,97 @@
+{% extends 'account/base-fullscreen.html' %}
+{% load static %}
+{% load account %}
+ 
+  
+{% block content %}
+{% block overlay %}
+
+  <div class="min-height-300 bg-gradient-primary position-absolute mb-8 w-100">
+    
+  </div>
+{% endblock overlay %}
+
+<!-- Appointment Start -->
+<div class="container-xxl py-1 mt-6">
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Appointment</h1>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Appointment Start -->
+<div class="container-xxl py-1">
+    <div class="container">
+    <div class="row">
+    <div class="col-sm-20">
+    <div class="card card- table">
+    <div class="card-body">
+ {% include 'clinic/includes/messages.html' %}
+    <div class="table-responsive">
+    <table class="table table-hover table-center mb-0 datatable">
+    <thead>
+    <tr>
+   
+    <th> No.</th>
+    <th>Patient Name</th>
+    <th>Date of Appointment</th>
+    <th>Time of Appointment</th>
+    <th>Creation Date</th>
+    <th>Status</th>
+    <th class="text-right">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for i in view_appointment %}
+    <tr>
+
+    <td>{{i.appointment_number}}</td>
+    <td>{{i.fullname}}</td>
+    <td>{{i.date_of_appointment}}</td>
+    <td>{{i.time_of_appointment}}</td>
+    <td>{{i.created_at}}</td>
+    {% if i.status == '0' %}
+                                                <td>Not Updated Yet</td>
+                                                {% else %}
+                                                <td>{{ i.status}}</td>{% endif %}
+    <td class="text-right">
+    <div class="actions">
+    <a href="{% url 'patientappointmentdetails' i.id %}">
+    <i class="btn btn-primary btn-block">View</i>
+    </a>
+  
+    </div>
+    </td>
+    </tr> {% endfor %}
+   
+    </tbody>
+    </table>
+    
+<!-- Pagination controls -->
+<div class="pagination" style="padding-top: 20px;padding-bottom: 20px;text-align: center;">
+    <span class="step-links">
+        {% if view_appointment.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ view_appointment.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ view_appointment.number }} of {{ view_appointment.paginator.num_pages }}.
+        </span>
+
+        {% if view_appointment.has_next %}
+            <a href="?page={{ view_appointment.next_page_number }}">Next</a>
+            <a href="?page={{ view_appointment.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,237 @@
+{% extends 'doctors/includes/doctor-sidebar.html' %}
+{% load static %}
+{% load account %}
+ 
+{% block main %}
+
+{% for i in patientdetails %}
+<div class="container-fluid page-header py-4 mb-2 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+
+      {% if i.status == 'Cancelled' %}
+      <span class="badge btn btn-block text-white bg-danger">Cancelled</span>
+      {% elif i.status == 'Approved' %}
+      <span class="badge btn btn-block text-white bg-gradient-primary">Approved</span>
+      {% elif i.status == 'Pending' %}
+      <span class="badge btn btn-block text-muted btn-outline-primary">Pending...</span>
+      {% elif i.status == 'Completed' %}
+      <span class="badge btn btn-block text-muted bg-success">Completed</span>
+      {% elif i.status == 'Revoked' %}
+      <span class="badge btn btn-block text-muted bg-danger">Revoked</span>
+      
+      {% else %}
+      <span class="badge btn btn-block text-muted btn-outline-primary">{{ i.status}}</span>
+       {% endif %}
+       <span class="badge btn btn-block text-muted btn-outline-primary">{{ i.created_at }}</span>
+      
+        <h1 class="display-4 font-weight-bold text-black mb-3 animated slideInDown">JDC-{{app_word}}</h1>
+
+
+{% if request.user.is_superuser or request.user.is_staff %}
+         <!-- Submit Section -->
+ <form method="post" action="{% url 'bookings:booking-view-reception' user.username  %}" id="booking-form">
+  {% csrf_token %}
+  <div class="submit-section mt-4 proceed-btn text-right">
+      <button type="submit" class="btn btn-primary submit-btn">Proceed to Update</button>
+  </div>
+</form>
+{% else %}
+
+<form action="" class="newsletter-form">
+  <input type="email"id="userMessage" name="email_address" value=" Hello, Made this appointment JDC-{{app_word}} on {{ i.created_at }}  any feedback?" placeholder="{{i.appointment_number}}" aria-label="Appointment Inquiry" required hidden >
+  <div class="submit-section proceed-btn text-right">
+       <img class="avatar-img rounded-circle" src="{% static 'icon/whatsapp.png' %}" alt="">
+   <button type="submit"  onclick="sendMessage()"class="btn btn-primary bg-success submit-btn">
+WhatsApp Doctor</button>
+  </div>
+  <script>
+    function sendMessage() {
+        const baseURL = "https://wa.me/+254708534184";
+        const userMessage = encodeURIComponent(document.getElementById('userMessage').value);
+        const fullURL = `${baseURL}?text=${userMessage}`;
+        window.open(fullURL, '_blank');
+    }
+    </script>
+</form>
+
+{% endif %}
+<button class="mt-4 btn btn-block text-success btn-outline-success" >
+<a href="{% url 'pay_stk'%}">Pay<a></button>
+
+<li class="{% if request.resolver_match.url_name == 'my-patients' %}active{% endif %}btn btn-block apt-btn btn-outline-primary bg-success-light">
+                                        <a href="/">
+                                            <i class="fas fa-user-injured"></i>
+                                            <span>Queue</span>
+                                        </a>
+                                    </li>
+
+<button class="mt-4 btn btn-block text-success btn-outline-success" >
+<a href="{% url 'dashboard:mpesa'%}">Insurance<a></button>
+<!-- /Submit Section -->
+    </div>
+</div>
+
+
+
+<!-- Appointment Details Start -->
+<div class="container-fluid py-2">
+    <div class="row">
+    <div class="card card- table">
+    <div class="card-body">
+    <div class="card-header">
+        <h4 class="card-title">Appointment Details </h4>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-hover table-center mb-0 datatable">
+      <tr><label class="display-7 font-weight-bold text-black mb-3 animated slideInDown center">{{i.fullname}} <br>{{i.email}} <br>
+        {{i.mobile_number}}</label>
+       </tr>
+
+      <tr>
+        <td></td>
+       
+      </tr>
+      
+<th >
+            {{ i.date_of_appointment }}  {{i.time_of_appointment}}
+</th>
+</table>
+<h4 class="card-title mt-2 ">Hello, Dr.{{ i.clinic.member.get_full_name }} <br>{{i.additional_msg}}</h4>
+                        </div>
+    </div>
+
+    <!-- Status Doctor Remarks  -->
+       <div class="card custom-form-card">
+       <div class="card-body">
+         <div class="card-header">
+           <h4 class="card-title">Appointment Status</h4>
+       </div>
+       <div class="card-body">
+         <div class="row ">
+      {% if i.remark == 0 %}
+          {% else %}
+            <h4 class="card-title mb-2  mt-2 "> {{i.remark}} </h4>
+        {% endif %}
+
+
+
+{% if request.user.is_authenticated and request.user.is_staff %}
+ <form method="POST" action="{% url 'dashboard:patient_appointment_details_remark'%}">
+    {% csrf_token %}
+              <tr>
+       <th>Doctor's Remark </th>
+      <td>
+       <textarea name="remark" placeholder="Remark" value="{{i.remark}}" rows="4" cols="14" class="form-control wd-450" required="true"></textarea></td>
+       <input type="text" value="{{i.id}}" name="pat_id" id="pat_id" class="form-control" required="" hidden>
+    </tr>
+ 
+     <tr>
+       <th>Appointment Status </th>
+       <td>
+ 
+      <select name="status" class="form-control  wd-450" required>
+        <option value="0" selected="true">------</option>
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+        <option value="Revoked">Revoked</option>
+        <option value="Processing">Processing</option>
+      </select></td>
+     </tr>
+    <div class="modal-footer mt-4 mb-2">
+   <button type="button" class="btn btn-primary " data-dismiss="modal">
+        <a href="{% url 'user_profile' %}">Close</a></button>
+        <button type="submit" name="submit" class="ms-2 btn btn-success">Update</button>
+  </div>
+
+ </form>
+
+
+  {% endif %}
+         </div>
+         </div>
+         </div>
+         </div>
+
+
+
+         <!-- Status and Doctor Remarks -->
+{% endfor %}
+    <!-- Prescribed Medications -->
+      <div class="card mt-2 custom-form-card">
+      <div class="card-body">
+        <div class="card-header">
+          <h4 class="card-title">Prescribed Medication</h4>
+      </div>
+      <div class="card-body">
+        <div class="row ">
+          <tr>
+            {% if i.status == 'Completed' %}
+            <td>{{ i.prescription}}</td>
+            {% else %}
+            <td>Not Prescribed </td> {% endif %}
+            </tr>
+            <tr>
+        </div>
+        </div>
+        </div>
+        </div>
+        <!-- Prescribed Medications -->
+
+
+
+  <!-- RecomMended  Tests -->
+          <div class="card custom-form-card">
+          <div class="card-body">
+            <div class="card-header">
+              <h4 class="card-title">Recommended Tests </h4>
+          </div>
+          <div class="card-body">
+            <div class="row ">
+              {% if i.status == 'Approved' %}
+
+              <td>{{ i.recommended_test}}</td>
+              {% else %}
+                <td>Not Recommended </td>
+
+            </div>
+            </div>
+            </div>
+            </div>
+             <!-- RecomMended  Tests -->
+
+
+
+
+             <!-- Doctors Remarks  -->
+              <div class="card custom-form-card">
+              <div class="card-body">
+                <div class="card-header">
+                  <h4 class="card-title">Doctors Word</h4>
+              </div>
+              <div class="card-body">
+                <div class="row ">
+                  {% if i.status == 'Approved' %}
+                  <td>{{ i.additional_msg}}</td>
+                  {% else %}
+                  <tr>
+                  <th>No Doctor Remarks yet</th>
+                  <td>{{ i.additional_msg}}</td>{% endif %}
+                  
+                   
+                </div>
+                </div>
+                </div>
+                </div>
+                 <!-- Doctors Remarks  -->
+
+
+    </div>
+    </div>
+  
+
+</div>
+</div>
+{% endif %}
+{% endblock %}

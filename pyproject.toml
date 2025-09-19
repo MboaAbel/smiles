@@ -1,0 +1,26 @@
+[build-system]
+requires = ['setuptools>=40.8.0', 'wheel']
+build-backend = 'setuptools.build_meta:__legacy__'
+
+
+[tool.black]
+ # Line length to use for formatting
+line-length = 79
+
+ # Files and directories to exclude from formatting
+exclude = '''
+ /(
+     \.git
+   | \.hg
+   | \.mypy_cache
+   | \.tox
+   | \.v   | _build
+   | buck-out
+   | build
+   | dist
+   | \.vscode
+   | venv
+   | migrations
+ )/
+ '''
+

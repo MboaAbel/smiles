@@ -1,0 +1,42 @@
+{% load static %}
+
+<section class="section blog" id="blog" aria-label="blog">
+        <div class="container">
+          <p class="section-subtitle text-center">Smiling  Blog</p>
+          <h2 class="h2 section-title text-center">...</h2>
+          <ul class="blog-list">
+        {% for blog in blog %}
+            <li>
+              <div class="blog-card">
+
+                <figure class="card-banner img-holder " style="--width: 1180; --height: 800;">
+      {% if  blog.blog_image.url %}          
+               <img   src="{{blog.blog_image.url}}" alt="SmileSlot" width="1180" height="800" loading="lazy" class="img-cover" style="border-radius:6px;">
+
+       {% endif %}                  <div class="card-badge">
+                    <ion-icon name="calendar-outline"></ion-icon>
+
+                    <time class="time" datetime="2022-03-24">{{blog.created_at}}</time>
+                  </div>
+                </figure>
+
+                <div class="card-content">
+
+                  <h3 class="h3">
+                    <a href="#" class="card-title">{{blog.blog_title}}</a>
+                  </h3>
+     <h3 class="h4">
+         <a href="#" class="card-title">{{blog.blog_subtitle}}</a>
+       </h4>
+         {{blog.caption|safe}}
+   <p class="card-subtitle" style="color:#008800;margin:2vh;">{{ blog.soshi_user }}</p>
+                  <a href="{% url 'blog_page' %}" class="card-link">Read More</a>
+
+                </div>
+
+              </div>
+            </li>
+         {% endfor %}     
+          </ul>
+        </div>
+      </section>

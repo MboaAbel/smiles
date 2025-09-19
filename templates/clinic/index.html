@@ -1,0 +1,110 @@
+{% load i18n static  %}
+{% block content %}
+
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+  <meta name="theme-colour"  content="white"> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmileSlot - We Are Best Dental Service</title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <link rel="shortcut icon" sizes="76x76"  href="{% static 'icon/Junction_Dental.png'%}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap"rel="stylesheet">
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="{% static 'clinic/css/style.css'%}">
+
+
+  <!-- 
+    - google font link
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap"rel="stylesheet">
+</head>
+<button id="install-btn" class="btn" style="display: none;position: fixed;bottom: 20px;right: 20px;padding: 12px 20px;background-color: #0fa3b1;color: #fff;border: none;border-radius: 30px;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);font-size: 16px;font-weight: 600;cursor: pointer;transition: background 0.3s ease;z-index: 9999;">Install App</button>
+                 {% include 'clinic/includes/navbar.html' %}
+
+{% block body %}
+<body id="top">
+        
+        {% endblock %}
+        {% block footer_extra %}{% endblock %}
+  <!-- - #HEADER-->
+
+
+  <main>
+    {% include 'nav/navbar_logo.html' %}
+    <article>
+      <!-- - #HERO-->
+
+    {% include 'clinic/includes/hero.html' %}
+      <!-- - #SERVICE-->
+       {% include 'clinic/includes/services.html' %}
+      <!--  - #ABOUT-->
+     {% include 'clinic/includes/about.html' %}
+      <!--  - #DOCTOR-->
+      {% include 'clinic/includes/blog.html' %}
+      <!-- - #CTA-->
+      <section class="section cta" aria-label="cta">
+        <div class="container">
+
+          <figure class="cta-banner">
+            <img src="{% static 'clinic/images/cta-banner.png'%}" width="1076" height="1076" loading="lazy" alt="cta banner"class="w-100">
+          </figure>
+
+          <div class="cta-content">
+            <p class="section-subtitle">Membership Plan</p>
+            <h2 class="h2 section-title">Exclusive benefits, Discounts with Priority bookings,Professional Experienced Dentists, Smiling tips... </h2>
+
+<!--            <button type="submit" class="btn join-now-btn"><a href="{% url 'register' %}">Join Now</a></button> -->
+
+          </div>
+
+        </div>
+      </section>
+
+     <!--  - #DOCTOR-->
+      {% include 'clinic/includes/doctors.html' %}
+      <!-- - #CTA-->
+      <!--  - #BLOG-->
+<!--      {% include 'clinic/includes/blog.html' %}-->
+    </article>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+      <a class="back-top-btn"
+ href="https://wa.me/254708534184?text=Hello!%20Junction%20Dental%20would%20like%20to%20inquire%20about%20your%20dental%20services.%20Can%20you%20please%20assist%20me?"
+  style="position:fixed;width:40px;height:40px;bottom:40px;right:40px;background-color:#25d366;color:#FFF;border-radius:50px;text-align:center;font-size:30px;box-shadow: 2px 2px 3px #999;z-index:100;" class="float" target="_blank">
+<i class="fa fa-whatsapp my-float" style="margin-top:16px;"></i>
+</a>
+  </main>
+         <!-- - #FOOTER-->
+ {% include 'clinic/includes/footer.html' %}
+  <!-- - #BACK TO TOP-->
+ 
+          {% include 'clinic/includes/scripts.html' %}
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("{% static 'service-worker.js' %}")
+      .then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(error => {
+       console.log('Service Worker registration failed:', error);
+      });
+  }
+</script>
+ </body>
+</html>
+
+{% endblock content %}

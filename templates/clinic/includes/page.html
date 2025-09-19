@@ -1,0 +1,29 @@
+                {% for i in page %}
+                <div class="bg-light rounded d-flex align-items-center p-5 mb-4">
+                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                        <i class="fa fa-phone-alt text-primary"></i>
+                    </div>
+                    <div class="ms-4">
+                        <p class="mb-2">Call Us Now</p>
+                        <h5 class="mb-0">+{{i.mobilenumber}}</h5>
+                    </div>
+                </div>
+                <div class="bg-light rounded d-flex align-items-center p-5">
+                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                        <i class="fa fa-envelope-open text-primary"></i>
+                    </div>
+                    <div class="ms-4">
+                        <p class="mb-2">Mail Us Now</p>
+                        <h5 class="mb-0">{{i.email}}</h5>
+                    </div>
+                </div>
+                <div class="bg-light rounded d-flex align-items-center p-5">
+                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                        <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                    </div>
+                    <div class="ms-4">
+                        <p class="mb-2">Address</p>
+                        <h5 class="mb-0">{{i.address}}</h5>
+                    </div>
+                </div>
+            </div>{% endfor %}

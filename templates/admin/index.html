@@ -1,0 +1,14 @@
+ {% extends 'doctors/includes/doctor-sidebar.html' %}
+    {% load static %}
+ {% load i18n static %}
+    {% load time_filters %}
+
+    {% block title %}
+        {{ doctor.get_full_name }} - Doctor Profile
+    {% endblock %}                                                                                >
+   
+{% block overlay %}
+  <div class="min-height-300 bg-primary position-absolute w-100" style="display:block;mask-image: linear-gradient(to bottom, black 80%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 80%, transparent 100%);box-decoration-break:clone;"></div>
+{% endblock overlay %}
+    {% block main %} 
+{% endblock %}

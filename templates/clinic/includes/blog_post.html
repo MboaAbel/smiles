@@ -1,0 +1,74 @@
+{% extends 'mpesa/mpesa-sidebar.html' %}
+
+ {% load static %}
+ {% load account %}
+ {% block main %}
+ <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+ <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+
+                                         <div class="col-md-15 col-lg-18 col-xl-18">
+                                             <div class="container-fluid py-6">
+                                                 <div class="row">
+                                                 <div class="col-md-8">
+                                                     <div class="card w-100">
+                                                       <div class="card-header pb-0">
+                                                         <div class="d-flex align-items-center">
+           <button class="btn btn-primary btn-sm ms-auto bg-gradient-primary">
+     <i class="fas fa-download me-2"></i> Account</button>
+                                                         </div>
+   <h2 class="card-title">Post Blog </h2>
+ <!-- <img class="card-title"style="margin-left:6px;margin-top:8vh;width:100px;"src="{%static 'icon/dca4ccef8168ab8d8efdf44f2ff8a9bb.jpg'%}"> -->
+                                                       </div>
+
+ <div class="row align-items-center">
+  <div class=" flex  bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4" style=" border-color:transparent; background-color:#ffffff00; color:#001100;">
+<form action="{% url 'blog_post' %}" method="POST" class="profile-update-form pb-4">
+             {% csrf_token %}
+
+    <div class="col-12">
+     <div class="card custom-form-card" id="basicInfoSection">
+ <div class="card-body">
+        <div class="row ">
+                      {% for field in form %}
+                      {% if field.name in 'blog_title,blog_subtitle,caption,blog_image'|stringformat:'s'|slice:',' %}
+                          <div class="col-md-6">
+                              <div class="form-group custom-input-group">
+                                  
+
+
+			<label class="form-label">{{ field.label }} {% if field.field.required %}                              
+			<span class="text-danger">*</span>{% endif %}</label>  
+
+
+             
+                                  {{ field }}
+                                 {{ field.media }}
+                                  {% if field.errors %}
+                                      <div class="error-feedback">
+
+
+
+                                                  {% for error in field.errors %}
+                                              {{ error }}
+                                          {% endfor %}
+                                      </div>
+
+               {% endif %} 
+                              </div>
+                          </div>
+                      {% endif %}
+
+             {% endfor %}
+    <div class="col-md-6">
+        <div class="form-group custom-input-group">
+  <button type="Submit" class="text-white btn bg-success">
+               Post
+             </button>
+
+ </div></div></div>
+
+   </form>
+            </div> </div></div></div>
+</body>
+{% endblock %}

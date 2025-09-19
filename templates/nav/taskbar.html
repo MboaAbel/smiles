@@ -1,0 +1,113 @@
+  {% load i18n static dashboard_tags %}
+  {% get_current_language as LANGUAGE_CODE %}
+  {% get_current_language_bidi as LANGUAGE_BIDI %}
+  {% load dashboard_tags %}
+  {% get_direction as direction %}
+  
+     <!DOCTYPE html>
+     {% get_admin_setting as admin_setting %}
+      <html lang="en">
+      <head>
+       <meta charset="utf-8" />
+      <meta name="theme-colour"  content="white">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="shortcut icon" sizes="76x76"  href="{% static 'icon/smileslot.png'%}" type="image/svg+xml">
+ 
+       <title>
+     smileslot
+       </title>
+ 
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+        <link href="{% static 'bar/css/styles.css' %}" rel="stylesheet" />
+      <!--     Fonts and icons     -->
+       <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+       <!-- Nucleo Icons -->
+       <link href="{% static 'accounts/css/nucleo-icons.css' %}" rel="stylesheet" />
+      <!-- Font Awesome Icons -->
+       <link id="pagestyle" href="{% static 'accounts/css/argon-dashboard.css' %}" rel="stylesheet" />
+ 
+ 
+         <script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+      {% block extrahead %}{% endblock extrahead %}
+ 
+       {% block extrastyle %}{% endblock extrastyle %}
+
+    </head>
+           <!--=============== HEADER ===============-->
+           <header class="header" id="header">
+               <nav class="nav  container">
+      <a href="/" class="nav__logo ms-4">SmileSlot</a>    
+          <div class=" nav__menu  blur  shadow-5  z-index-3 " id="nav-menu">
+                       <ul class="nav__list">       
+               <li class="nav__item"> 
+                          <a href="/" class="nav__link active-link">
+                                   <i class='bx bx-home-alt nav__icon'></i>        
+  <span class="nav__name">Home</span>  
+                  </a>
+                           </li>        
+                           <li class="nav__item">   
+                <a href="{% url 'dashboard:mpesa' %}" class="nav__link">       
+                      <i class='bx bx-user nav__icon'></i>
+                                   <span class="nav__name">Wallet</span>
+                               </a>
+                           </li>
+
+                           <li class="nav__item">
+                               <a href="{% url 'user_profile_view' %}" class="nav__link">
+                                  <i class='bx bx-book-alt nav__icon'></i>
+                                   <span class="nav__name">Profile</span>
+                              </a>
+                          </li>
+
+                           <li class="nav__item">
+                               <a href="/clinics" class="nav__link">
+                                   <i class='bx bx-briefcase-alt nav__icon'></i>
+                                   <span class="nav__name">Clinic</span>
+                               </a>
+                           </li>
+
+                           <li class="nav__item">
+                                <a href="{% url 'pay_stk' %}" class="nav__link">
+                                   <i class='bx bx-message-square-detail nav__icon'></i>
+                                   <span class="nav__name">Shop</span>
+                               </a>
+                           </li>
+                       </ul>
+                   </div>
+
+              
+    {% if request.user.is_authenticated %}
+    {% if request.user.is_superuser %}
+
+ <a href="{% url 'dashboard:doctor_home' %}">  <img src="{{ user.profile_photo.url}}" alt="smileslot" class="nav__img"> </a>
+            {{ request.user.get_full_name|default:request.user.username }}
+        </a>        {% elif request.user.is_staff %}
+   <a href="{% url 'dashboard:doctor_home' %}">  <img src="{{ user.profile_photo.url}}" alt="smileslot" class="nav__img "> </a>
+            {{ request.user.get_full_name|default:request.user.username }}
+        </a>
+    {% else %}                      
+    <a href="{% url 'update-basic-information' %}">  <img src="{{ user.profile_photo.url}}" alt="smileslot" class="nav__img "> </a>
+            {{ request.user.get_full_name|default:request.user.username }}
+       </a>
+   {% endif %}
+ {% else %}
+  <a href="{% url 'register' %}">  <img src="{% static 'icon/smileslot.png' %}" alt="smileslot" class="nav__img py-2"></a>
+ {% endif %}
+
+               </nav>
+           </header>
+ 
+            <body class="navbar-vertical g-sidenav-show bg-gray">
+                <main class="main-content  ">
+           {% block main %}
+              {% endblock main %}
+                <!--=============== HOME ===============-->
+           </main>
+           <!--=============== MAIN JS ===============-->
+ 
+           <!-- Specific JS goes HERE -->
+             {% block scripts %}
+         {% endblock scripts %}
+          <script src="{% static 'bar/js/main.js' %}"></script>
+      </body>
+</html>

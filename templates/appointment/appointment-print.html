@@ -1,0 +1,100 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JDC-{{appointment.appointment_number}}-{{ appointment.pk }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .details { margin-bottom: 20px; }
+        .details table { width: 100%; border-collapse: collapse; }
+        .details td { padding: 8px; border: 1px solid #ddd; }
+        .footer { margin-top: 50px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+     <img src="{% static 'icon/smileslot.png' %}" class="navbar-brand-img h-100" alt="main_logo">
+        <h1>SmileSlot</h1>
+            <h2>Appointment Details</h2>
+            <h3>Booking Reference: JDC-{{appointment.appointment_number}}/{{ appointment.pk }}</h3>
+            <p> Generated on {{ appointment.created_at }}</p>
+        </div>
+        
+        <div class="details">
+            <table>
+                <tr>
+                    <td><strong>Facility Name:</strong></td>
+                    <td>{{ appointment.clinic.clinic_name }}</td>
+                </tr>
+
+                    <tr>
+                     <td><strong>Facility WhatsApp No:</strong></td>
+                     <td>{{ appointment.clinic.mobile_number }}</td>
+                 </tr>
+                <tr>
+                    <tr>
+                     <td><strong>Facility Email:</strong></td>
+                     <td>{{ appointment.clinic.clinic_email }}</td>
+                 </tr>
+                <tr>
+                    <td><strong>Client Name:</strong></td>
+                    <td>{{ appointment.fullname }}</td>
+                </tr>
+                  <tr>
+                    <td><strong>Client Phone No.:</strong></td>
+                    <td>{{ appointment.mobile_number }}</td>
+                 </tr>
+                <tr>
+                    <td><strong>Service Requested:</strong></td>
+                    <td>{{ appointment.service }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Appointment Date:</strong></td>
+                    <td>{{ appointment.date }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Appointment Start Time:</strong></td>
+                    <td>{{ appointment.start_time }}</td>
+                </tr>
+
+                   <tr>
+                     <td><strong>Appointment End Time:</strong></td>
+                     <td>{{ appointment.end_time }}</td>
+                </tr>
+                <tr>
+                    <td><strong> Duration:</strong></td>
+                    <td>{{ appointment.service.get_duration }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Status:</strong></td>
+                    <td>{{ appointment.status|title }}</td>
+                </tr>
+                <tr>
+                    <td><strong> Fee:</strong></td>
+                    <td>Ksh.{{ appointment.service.price}}</td>
+                </tr>
+                 <tr>
+                     <td><strong>Payment Status:</strong></td>
+                     <td> {% if appointment.payment == False %} Not Settled {% else %} Settled {% endif %}</td>
+                 </tr>
+                  <tr>
+                     <td><strong>Service Code:</strong></td>
+                     <td>{{ appointment.service.service_code }}</td>
+                 </tr>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>" a smile is the best outfit, our priority." </p>
+        </div>
+    </div>
+    <script>
+        window.onload = function() { window.print(); }
+    </script>
+</body>
+</html> 

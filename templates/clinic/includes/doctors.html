@@ -1,0 +1,49 @@
+{% load static %} 
+
+<section class="section doctor " style="padding-bottom:5px;"  aria-label="doctor">
+    <div class="container">
+        <p class="section-subtitle text-center">Dentists Network</p>
+        <h2 class="h2 section-title text-center">Onboarded. </h2>
+
+
+        <ul class="has-scrollbar">
+
+         <!-- Doctor Widget -->
+    
+         {% for doctor in doctors %}
+         <li class="scrollbar-item">
+             <div class="doctor-card">
+                 <div  href="{% url 'doctors:doctor-profile' doctor.username %}" class="card-banner img-holder" style="--width: 460; --height: 500; background-color: rgba(0,0,0,0.1); border-radius: 40px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); z-index: 10; display: flex; box-shadow: 20px 20px 80px 20px rgba(0,0,0,0.1);">
+                     <img src="{{ doctor.profile_photo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
+                 </div>
+                 <h3 class="h3">
+                     <a href="{% url 'doctors:doctor-profile' doctor.username %}" class="card-title">Dr. {{ doctor.get_full_name }}</a>
+                 </h3>
+                 <p class="card-subtitle">{{ doctor.member.clinic}}</p>
+                 <p class="card-subtitle">{{ doctor.email }}</p>
+                 <p class="card-subtitle">{{ doctor.mobile_number }}</p>
+                 <ul class="card-social-list">
+                     <li>
+                         <a href="/" class="card-social-link">
+                             <ion-icon name="logo-facebook"></ion-icon>
+                         </a>
+                     </li>
+                     <li>
+                         <a href="#" class="card-social-link">
+                             <ion-icon name="logo-twitter"></ion-icon>
+                         </a>
+                     </li>
+                     <li>
+                         <a href="#" class="card-social-link">
+                             <ion-icon name="logo-instagram"></ion-icon>
+                         </a>
+                     </li>
+                 </ul>
+             </div>
+         </li>                   
+                 {% endfor %}
+                
+         <!-- /Doctor Widget -->
+        </ul>
+    </div>
+</section>

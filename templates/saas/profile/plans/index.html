@@ -1,0 +1,25 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_content %}
+<plan-list inline-template id="plan-list-container">
+  <div>
+    <h2>Plans</h2>
+    <a id="plan-new" href="{{ urls.provider.plan_new }}" title="Create plan">Add Plan ...</a>
+    <table id="no-data" v-show="itemsLoaded && items.results.length === 0">
+      <tr>
+        <td colspan="4">
+         No Plans<span v-show="params.q"> [[params.q]]</span>
+        </td>
+      </tr>
+    </table>
+    <table id="data-in-rows" v-show="itemsLoaded && items.results.length > 0">
+      <tr :id="item.slug" v-for="item in items.results">
+        <td>
+          <!-- TODO just basic template instead of an error page -->
+          <a :href="'{{urls.provider.plans}}' + item.slug + '/'">[[item.title]]</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</plan-list>
+{% endblock %}

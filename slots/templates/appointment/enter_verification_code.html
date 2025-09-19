@@ -1,0 +1,39 @@
+{% extends BASE_TEMPLATE %}
+{% load i18n %}
+{% load static %}
+
+{% block customCSS %}
+    <link rel="stylesheet" href="{% static 'slots/css/verification_code.css' %}">
+{% endblock %}
+
+{% block title %}{% trans 'Enter Verification Code' %}{% endblock %}
+{% block description %}{% trans 'Enter Verification Code' %}{% endblock %}
+
+{% block body %}
+    <div class="vcode-container">
+        <div class="vcode-card">
+            <h1 class="vcode-title">{% trans 'Enter Verification Code' %}</h1>
+            <p class="vcode-instruction">{% trans "We've sent a verification code to your email. Please enter it below" %}:</p>
+
+            <form method="post" class="vcode-form">
+                {% csrf_token %}
+                <div class="vcode-input-group">
+                    <label for="verification-code" class="vcode-label">{% trans 'Code' %}:</label>
+                    <input type="text" id="verification-code" name="code" class="vcode-input" required>
+                </div>
+                <button type="submit" class="vcode-button">{% trans 'Submit' %}</button>
+            </form>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="vcode-alert vcode-alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+{% endblock %}

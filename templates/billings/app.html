@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div id="app">
+    <p>
+Welcome to the product!
+    </p>
+    <p>
+If you haven't loaded the test fixtures, you will need to create three
+organizations for the demo to work:
+<ul>
+<li>A payment processor (stripe or razorpay with pk=settings.PROCESSOR_ID)</li>
+<li>A broker platform (with slug=settings.PLATFORM)</li>
+<li>A subscriber (with slug=request.user)</li>
+</ul>
+    </p>
+    <p>
+You will also need to create:
+<ul>
+<li>A Role such that request.user is a *manager* of subscriber.</li>
+<li>a Plan with slug='basic' and advance discount of zero.</li>
+</ul>
+    </p>
+    <div id="upgrades">
+        <button id="basic" class="select-item">Upgrade</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block bodyscripts %}
+<script type="text/javascript" src="/static/js/djaodjin-resources.js"></script>
+<script type="text/javascript" src="/static/js/djaodjin-saas.js"></script>
+{% endblock %}

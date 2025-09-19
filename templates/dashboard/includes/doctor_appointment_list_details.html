@@ -1,0 +1,35 @@
+{% extends 'account/base-fullscreen.html' %}
+{% load static %}
+{% load account %}
+ 
+  
+{% block content %}
+{% block overlay %}
+
+  <div class="min-height-300 bg-gradient-primary position-absolute mb-8 w-100" style="display:block;mask-image: linear-gradient(to bottom, black 80%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 80%, transparent 100%);box-decoration-break:clone;">
+    
+  </div>
+{% endblock overlay %}
+
+ <div class="container-fluid page-header py-2 mt-4 mb-2 wow fadeIn" data-wow-delay="0.1s">
+     <div class="container">
+     <span class="badge btn btn-block apt-btn mt-6  btn-outline-primary ">{{ UpApp.status }}</span>
+         <h1 class="display-3 text-white mb-3  animated slideInDown">JDC-{{ UpApp}}</h1>
+     </div></div>
+   
+
+<main class="main-content position-relative max-height-vh-100  border-radius-lg ">
+     <section>
+       <div class="page-header min-vh-100">
+         <div class="container">
+           <div class="row">
+{% include 'clinic/includes/messages.html' %}
+             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+               <div class="card card-plain">
+                 <div class="card-body">
+       <button class="btn display-3 btn-primary   mb-3 animated slideInDown">
+         <a href="{% url 'appointment_update' UpApp%}" class="  text-white">Update</a></button>  
+        <button class="badge btn btn-block apt-btn  btn-outline-primary"><a href="{% url 'bookings:doctor-booking-view' request.user.username UpApp %}">Time Slot</a></button>
+</div></div></div></div></div>
+</div></section> </main>
+{% endblock %}

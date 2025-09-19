@@ -1,0 +1,64 @@
+{% extends 'user_profile/base.html' %}
+{% block content %}
+{% load static %}
+
+
+ <div class="container-xxl py-5">
+  <div class="container">
+      {% include 'clinic/includes/messages.html' %}
+      
+      
+
+
+      <section class="section contact" aria-label="contact">
+        <div class="container"> 
+         <div class="row g-4">
+            <div class="col-12 text-center">
+        <div class="p-5 bg-light rounded">
+                         
+            <a href="{% url 'appointment' %}" class="btn btn-primary"> <ion-icon name="call-outline"></ion-icon>Book Appointment</a>  
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+        </div>
+        </section>
+
+
+
+      
+               
+        <section class="newsletter" aria-label="newsletter">
+            <div class="container">
+    
+              <div class="wrapper">
+                <h2 class="h2 section-title">SmileSlot</h2>
+                <p class="section-text"> </p> Dental Health Updates!
+              </div>
+    
+              <form action="" class="newsletter-form">
+                <input type="text"id="userMessage" name="message_to_doc" placeholder="Talk to use..." aria-label="Send Doc a message"
+                  required class="email-field">
+                <button type="submit" onclick="sendMessage()" class="btn btn-secondary">Send</button>
+                <script>
+                  function sendMessage() {
+                      const baseURL = "https://wa.me/+254708534184";
+                      const userMessage = encodeURIComponent(document.getElementById('userMessage').value);
+                      const fullURL = `${baseURL}?text=${userMessage}`;
+                      window.open(fullURL, '_blank');
+                  }
+                  </script>
+              </form>
+            </div>
+          </section>
+        </article>
+        </main>
+     {% include 'clinic/includes/footer.html' %}
+  
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="arrow-up" aria-hidden="true"></ion-icon>
+      </a>
+        
+        {% endblock %} 

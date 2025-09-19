@@ -1,0 +1,184 @@
+{% extends 'account/base-fullscreen.html' %}
+
+{% load static %}
+
+{% block scripts %}
+
+    <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Nucleo Icons -->
+  <link href="{% static 'accounts/css/nucleo-icons.css' %}" rel="stylesheet" />
+  <link href="{% static 'accounts/css/nucleo-svg.css' %}" rel="stylesheet" />
+  <!-- <link href="{% static 'clinic\css\main.min.css' %}" rel="stylesheet" /> >
+  <!-- Font Awesome Icons -->
+ <!-- CSS Files -->
+  <link id="pagestyle" href="{% static 'accounts/css/argon-dashboard.css' %}" rel="stylesheet">
+  <link id="pageformstyle" href="{% static 'accounts/css/forms.css' %}" rel="stylesheet">
+  <link id="widgets" href="{% static 'accounts/css/widgets.css' %}" rel="styles>
+
+    <!-- Sticky Sidebar JS -->
+    <script src="{% static 'assets/plugins/theia-sticky-sidebar/ResizeSensor.js' %}"></script>
+    <script src="{% static 'assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js' %}"></script>
+    <script src="{% static 'accounts/js/argon-dashboard.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+     
+                        <div class="card shadow-lg mx-4 card-profile-bottom mt-8">
+                            <div class="card-body p-3">
+                              <div class="row gx-4">
+                                <div class="col-auto">
+   {% if request.user.is_authenticated %}
+                                  <div class="avatar avatar-xl position-relative">
+            <a href="{% url 'update-basic-information'  %}">                                   
+             <img src="{{ user.profile_photo.url}}"  alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                                </a>  </div>
+    {% endif %}
+                                </div>
+                                <div class="col-auto my-auto">
+                                  <div class="h-100">
+          			{% if user.get_full_name %}
+                                    <h5 class="mb-1">
+                                     Hello, {{ user.get_full_name }}
+                                    </h5>
+					{% else %}
+                
+                                    {% if user.mobile_number %}
+                                    <p class="mb-0 font-weight-bold text-sm">
+                                    Phone No. {{user.mobile_number}}
+                                    </p>
+                                    {% else %}
+				     <h5 class="mb-1">
+                                      {{ user.username }}
+                                    </h5>
+				    {% endif %}
+                                    <p class="mb-0 font-weight-bold text-sm">
+                                      {{user.email}}
+                                     </p>
+                                    {% endif %}
+                                  </div>
+                                </div>
+
+
+                                <div class="col-lg-6 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                                  <div class="nav-wrapper position-relative end-0">
+                                    <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                                      <li class="nav-item">
+                                        <div href="{% url 'blog_page' %}" class="nav-link mb-0 px-0 py-2 active d-flex align-items-center justify-content-center " data-bs-toggle="tab"  role="tab" aria-selected="true">
+                                         <a href="{% url 'blog_page' %}">
+						<i class="ni ni-books me-sm-1  "></i>
+                                          <span class="ms-1 font-weight-bold"> Blog</span>
+                                        </a>
+                                      </div>
+                                      </li>
+                                      <li class="nav-item">
+                                        <div class="nav-link mb-0 px-0 py-2 d-flex align-items-center justify-content-center " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
+                                
+                   <a href="{% url 'pay_stk' %}">
+          <i class="ni ni-cart me-sm-1 "></i>
+                                          <span class="ms-1 font-weight-bold">Shop</span>
+                                        </a>
+   </div>
+                                      </li>
+                                      <li class="nav-item">
+                         <div class="nav-link mb-0 px-0 py-2 d-flex align-items-center justify-content-center "data-bs-toggle="tab" href="/mpesa" role="tab" aria-selected="false">
+                                  <a href="{% url 'dashboard:mpesa' %}">
+					 <i class="ni ni-credit-card me-sm-1"></i>
+                                          <span class="ms-1 font-weight-bold">Wallet</span>
+                                        </a>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div> 
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </nav>
+                        </div>
+                </div>
+            </div>
+        </div>
+<div class="ms-4 w-70">   
+    {% include 'clinic/includes/messages.html' %}
+
+</div>
+</div>
+    <!-- /Breadcrumb -->
+
+    <!-- Page Content -->
+    <div class="content ">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+
+                    <!-- Profile Sidebar -->
+                    <div class="profile-sidebar">
+                        <div class="widget-profile pro-widget-content">
+                            <div class="profile-info-widget">
+    
+                                <div class="profile-det-info">
+                                    <div class="patient-details">
+           {% if user.profile.city and user.profile.country %}
+                                            <h5 class="mt-2">
+                                                <i class="fas fa-map-marker-alt"></i> 
+          {{ user.profile.city }}, {{ user.profile.country }}
+                                            </h5>
+                              {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-widget mt-2">
+                            <nav class="dashboard-menu">
+                                <ul>
+	
+             <a href="{% url 'appointment' %}" class=" btn btn-block apt-btn bg-success ">
+                                      <i class="fas fa-calendar"></i>
+                                        <span style="color:#f5f8ff;">Book Appointment</span>
+
+
+              </a>
+     {% if request.user.is_authenticated %}                
+     {% if request.user.is_doctor %}
+       <a href="{% url 'doctors:schedule-timings' %}" class="{% if request.resolver_match.url_name == 'appointments' %}active{% endif %} btn btn-block apt-btn btn-outline-primary bg-success-light ">
+                                             <i class="fas fa-hourglass-start"></i>
+                                             <span>Clinic</span>   </a>
+               {% else %}
+                                   <a href="{% url 'user_profile' %}" class=" btn btn-block apt-btn text-mute ">
+                                       <i class="fas fa-user-injured"></i>
+                                         <span>Timeline</span>
+                                {% endif %}
+                                    <a href="{% url 'logout' %}" class=" btn btn-block apt-btn bg-danger ">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span style="color:black;">Logout</span>
+                                    </a>
+     {% endif %}
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- /Profile Sidebar -->
+
+                </div>
+
+                <div class="col-md-7 col-lg-8 col-xl-9">
+
+                    {% block main %}{% endblock %}
+      {% include 'account/includes/scripts.html' %}
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /Page Content -->
+
+{% endblock %}

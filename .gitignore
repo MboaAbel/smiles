@@ -1,0 +1,84 @@
+# Python caches and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Packaging and build artifacts
+.Python
+build/
+dist/
+downloads/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+
+# Tests and coverage
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+collected_static/
+media/
+*.mo
+*.pot
+
+# Environment / secrets
+.env
+.env.*
+secrets.json
+credentials.yaml
+*.pem
+*.key
+
+# Frontend / Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.pnp.*
+dist/
+build/
+
+# Docker / containers
+docker-compose.override.yml
+docker-compose.*.yml
+*.env.*.local
+volume_data/
+
+# Editors / OS
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Typechecker / linter caches
+.mypy_cache/
+.pyre/
+.pytype/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/

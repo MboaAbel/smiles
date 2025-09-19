@@ -1,0 +1,153 @@
+  {% extends 'account/base-fullscreen.html' %} 
+  {% load static %}
+ 
+  {% block scripts %}
+    {% include 'doctors/includes/scripts.html' %}
+    <script type="text/javascript" src="/static/vendor/jquery.js"></script>
+  {% endblock %}
+   {% block localheader %}{% endblock %}
+    {% block overlay %}
+ 
+  <div   style="display:block;mask-image: linear-gradient(to bottom, black 80%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom,black 80%,transparent 100%);box-decoration-break: clone;"class="min-height-300 bg-gradient-primary position-absolute mb-8 w-100">
+ 
+        </div>
+     {% endblock overlay %}
+ {% block content %}
+      <!-- Breadcrumb -->
+                          <div class="card shadow-lg mx-4 card-profile-bottom mt-8">
+                              <div class="card-body p-3">
+                                <div class="row gx-4">
+                                  <div class="col-auto">
+ 
+ 
+  {% if request.user.is_authenticated %}
+                                      <div class="avatar avatar-xl position-relative">
+                <a href="{% url 'user_profile'  %}">
+                 <img src="{{ user.profile_photo.url}}"  alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                                    </a>  </div>                                       {% endif %}
+                                    </div>
+                                    <div class="col-auto my-auto">
+                                      <div class="h-100">
+                                    {% if user.first_name %}
+                                        <h5 class="mb-1">
+                                         Hello, {{ user.first_name }}
+                                       </h5>
+                                            {% else %}
+                                        {% if user.mobile_number %}
+                                      <p class="mb-0 font-weight-bold text-sm">
+                                        Phone No. {{user.mobile_number}}
+                                        </p>
+                                      {% else %}
+                                        <h5 class="mb-1">               {{ user.username }}
+                                       </h5>
+                                        {% endif %}
+                                        <p class="mb-0 font-weight-bold text-sm">
+                                         {{user.email}}
+                                         </p>
+                                        {% endif %}       </div>
+                                    </div>
+ 
+                                  <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                                    <div class="nav-wrapper position-relative end-0">
+                                      <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                                        <li class="nav-item">                                                              
+  				 <a href="{% url 'dashboard:mpesa' %}" >
+                       <div class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center " data-bs-toggle="tab" role="tab" aria-selected="true">
+                                            
+						  <i class="fas fa-wallet"></i>
+                                            <span class="ms-2 font-weight-bold">Wallet</span>
+                                         </div> </a>
+                                        </li>
+                                     <li class="nav-item">
+             <a class="nav-link mb-0 px-0 py-1 d-flex align-items-center justify-content-center " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false"> 
+                                          <i class="ni ni-cart"></i>
+                                            <span class="ms-2 font-weight-bold">Shop</span>
+                                          </a>
+                                        </li>
+                                        <li class="nav-item">
+                                   <a href="{% url 'blog_page' %}" >
+                           <div  class=" nav-link mb-0 px-0 py-1 d-flex align-items-center justify-content-center " data-bs-toggle="tab" role="tab" aria-selected="false">
+                                            <i class="ni ni-books  me-sm-1"></i>
+                                            <span class="ms-2 font-weight-bold">Blog</span>
+                                          </div> </a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+ 
+  <div style="margin:2px;">
+      {% include 'clinic/includes/messages.html' %}
+  </div>
+<div id="messages">
+      <div id="messages-content">
+        {% for message in request.messages %}
+        <div class="alert{% if message.tags %} alert-{{message.tags}}{% endif %}">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <div>{{message|safe}}</div>
+        </div>
+        {% endfor %}
+        {% if form %}
+        {% for message in form.messages %}
+        <div class="alert alert-danger">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <div>{{message}}</div>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
+    </div>
+      <!-- Page Content -->
+      <div class="content">
+          <div class="container-fluid">
+ 
+              <div class="row">
+                  <div class="col-md-3 col-lg-3 col-xl-3 theiaStickySidebar">
+ 
+                      <!-- Profile Sidebar -->
+                     <div class="profile-sidebar">
+                         <div class="widget-profile pro-widget-content">
+                             <div class="profile-info-widget">
+                                 <div class="profile-det-info">
+
+                                     <div class="patient-details">
+
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="dashboard-widget">
+                             <nav class="dashboard-menu">
+                                 <ul>
+                                         {% if request.user.is_authenticated %}
+                                         <a href="{% url 'appointment' %}" class=" btn btn-block apt-btn  btn-outline-black bg-primary ">
+                                             <i class="fas fa-calendar"></i>
+                                             <span style="color:black;">Book Appointment</span>
+                                         </a>
+                                   {% endif %}
+                                 </ul>
+                             </nav>
+                         </div>
+                     </div>
+                     <!-- /Profile Sidebar -->
+
+                 </div>
+
+                 <div class="col-md-6 col-lg-8 col-xl-9">
+
+                     {% block main %}{% endblock %}
+
+                 </div>
+             </div>
+
+         </div>
+
+     </div>
+     <!-- /Page Content -->
+<script type="text/javascript">
+         var _showErrorMessagesProviderNotified = "We have been notified"
+             + " and have started on fixing the error. We apologize for the"
+             + " inconvinience.";
+       </script>
+ {% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'user_profile/base.html' %}
+{% block content %}
+{% load static %}
+
+      <section class="section about" aria-label="about">
+        <div class="container">
+
+          <div class="about-banner img-holder" style="--width: 600; --height: 700;">
+            <img src="{% static 'icon\0bca77a5910d18c3470d7c1353d82fd9.jpg' %}" width="600" height="700" loading="lazy" alt="about banner"
+              class="img-cover">
+
+            <button class="play-btn" aria-label="play video">
+              <ion-icon name="play" aria-hidden="true"></ion-icon>
+            </button>
+          </div>
+
+          <div class="about-content">
+
+            <h2 class="h2 section-title"></h2>
+
+            <p class="section-text">
+             </p>
+
+            <a href="{% url 'appointment' %}" class="btn btn-primary">Book Appointment</a>
+
+          </div>
+
+        </div>
+      </section>
+      
+      {% include 'user_profile/includes/services.html' %}
+      <section  class="section contact" aria-label="contact">
+        <div class="container">
+
+          <h2 class="h2 section-title">Have Question ? </h2>
+
+          <p class="section-text">
+         Request for Dental Consultancy Services.
+          Video Call Your Dentist Today</p>
+
+        <a class="btn btn-primary" href="{% url 'clinics' %}">
+            <ion-icon name="call-outline"></ion-icon>
+            Talk to Doctor
+             </a>
+        
+
+        </div>
+        <section class="newsletter " aria-label="newsletter">
+        <div class="container">
+
+          <div class="wrapper">
+            <h2 class="h2 section-title">Dental Tips</h2>
+
+            <p class="section-text"> Get latest Blog updates</p>
+          </div>
+
+          <form action="" class="newsletter-form">
+            <input type="email"id="userMessage" name="email_address" placeholder="Your email" aria-label="Enter your email"required  class="email-field">
+            <button type="submit" onclick="sendMessage()" class="btn btn-secondary">Subscribe</button>
+            <script>
+              function sendMessage() {
+                  const baseURL = "https://wa.me/+254708534184";
+                  const userMessage = encodeURIComponent(document.getElementById('userMessage').value);
+                  const fullURL = `${baseURL}?text=${userMessage}`;
+                  window.open(fullURL, '_blank');
+              }
+              </script>
+          </form>
+
+        </div>
+      </section>
+       
+      </section>
+    
+    
+{% endblock %}

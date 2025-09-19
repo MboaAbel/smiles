@@ -1,0 +1,8 @@
+<div>
+    <label>From</label>
+    <input type="date" v-model="_start_at"></input>
+    <label>To</label>
+    <input type="date" v-model="_ends_at"></input>
+    <label>Filter</label>
+    <input type="text" v-model="params.q" @input="debouncedAutoReload" />
+</div>

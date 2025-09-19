@@ -1,0 +1,58 @@
+{% load i18n static dashboard_tags %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% load dashboard_tags %}
+{% get_direction as direction %} 
+{% get_admin_setting as admin_setting %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% trans "SmileSlot - a mboa technology" %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}Tumebeba System Focus na Smiles{% endblock %}">
+    <meta name="keywords" content="{% block keyword %}smileslot, a mboa technology{% endblock %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="{% block author %}Mboa Technologies{% endblock %}">
+    {% block customMetaTag %}{% endblock %}
+
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <!-- Custom CSS-->
+
+    {% block customCSS %}{% endblock %}
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+          rel="stylesheet">
+    {% block scriptHead %}{% endblock %}
+
+</head>
+<body>
+<main class="main-content position-relative max-height-vh-100  h-1 border-radius-lg ">
+
+{% block content %}
+{% endblock content %}
+
+ {% include 'user_profile/includes/patient-sidebar.html' %}
+  <div class="col-md-7 col-lg-8 col-xl-9">
+{% block body %}{% endblock %}
+</div>
+</main>
+<!--====== Javascript & Jquery ======-->
+<!-- Ion Icons -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"
+        integrity="sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% block customJS %}{% endblock %}
+
+<!--end footer-->
+</body>
+
+</html>

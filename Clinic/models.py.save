@@ -1,0 +1,57 @@
+from django.db import models
+from ckeditor.fields import RichTextField
+import random
+import uuid
+
+
+
+from django.db import models
+ 2 from django_tenants.models import TenantMixin, DomainMixin
+ 3
+ 4 class Tenant(TenantMixin):
+ 5     name = models.CharField(max_length=100)
+ 6     paid_until = models.DateField()
+ 7     on_trial = models.BooleanField(default=True)
+ 8     created_on = models.DateField(auto_now_add=True)
+ 9
+10     # Dental-specific fields
+11     clinic_name = models.CharField(max_length=200)
+12     clinic_owner_name = models.CharField(max_length=200)
+13     subscription_plan = models.CharField(max_length=50, default='basic')
+14     max_users = models.IntegerField(default=5)
+15     max_patients = models.IntegerField(default=500)
+16
+17     auto_create_schema = True
+
+
+
+
+class Domain(DomainMixin):
+    pass
+
+
+
+class Page(models.Model):
+    pagetitle = models.CharField(max_length=250)
+    address = models.CharField(max_length=250)
+    aboutus = models.TextField()
+    email = models.EmailField(max_length=200)
+    mobilenumber = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.pagetitle
+
+class Blog(models.Model):
+    soshi_user = models.CharField(max_length=100)
+    blog_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    blog_title = models.CharField(max_length=250)
+    blog_subtitle = models.CharField(max_length=250)
+    caption = RichTextField(blank=True)
+    blog_image = models.ImageField(upload_to='blog_photos/', null=False, default='icon/bondijunction_dentalclinic_logo-300x258.jpg', blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.blog_id}'

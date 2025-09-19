@@ -1,0 +1,268 @@
+{% extends 'doctors/includes/doctor-sidebar.html' %}
+{% load static %}
+{% load time_filters %}
+  
+{% block title %}
+{{ doctor.get_full_name }} - Doctor Profile
+{% endblock %}
+  
+ {% block main %}                                                                       
+ {% block overlay %}
+ {% endblock overlay %}
+ 
+         {% include 'doctors/includes/scripts.html' %}    
+
+
+  
+    <!-- Page Content -->
+    <div class="content">
+        <div class="container">
+            <!-- Doctor Widget -->
+ 
+            <div class="card">
+                <div class="card-body">
+                    <div class="doctor-widget">
+                        <div class="doc-info-left">
+       
+                     <div class="doctor-img mb-4">
+          <img src="{{ clinic.clinic_logo.url }}"  width="100%" height="150"style="border-radius:20px;display: block;mask-image: linear-gradient(to bottom, black 80%, transparent 100%);-webkit-mask-image: linear-gradient(to bottom,black 80%,transparent100%);box-decoration-break: clone;" class="img-fluid" alt="{{ doctor.get_full_name }}">
+                              </div>
+                            <div class="doc-info-cont">
+                                <h4 class="doc-name">{{ clinic.clinic_name}}</h4>
+                                <p class="doc-speciality"> {{ clinic.member.get_full_name }}</p>
+                           
+                                <div class="rating">
+                                    <i class="fas fa-star {% if doctor.rating >= 1 %}filled{% endif %}"></i>
+                                    <i class="fas fa-star {% if doctor.rating >= 2 %}filled{% endif %}"></i>
+                                    <i class="fas fa-star {% if doctor.rating >= 3 %}filled{% endif %}"></i>
+                                    <i class="fas fa-star {% if doctor.rating >= 4 %}filled{% endif %}"></i>
+                                    <i class="fas fa-star {% if doctor.rating >= 5 %}filled{% endif %}"></i>
+                                    <span class="d-inline-block average-rating">({{ clinic.reviews_count|default:0 }})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="doc-info-right">
+                            <div class="clini-infos">
+                                <ul>
+                                </ul>
+                            </div>
+                            <div class="clinic-booking">
+                                <a class="apt-btn" href="{% url 'appointment'  %}">New Booking</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Doctor Widget -->
+
+            <!-- Doctor Details Tab -->
+            <div class="card">
+                <div class="card-body pt-0">
+                    <!-- Tab Menu -->
+                    <nav class="user-tabs mb-4">
+                        <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#doc_overview" data-toggle="tab">Specializations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#doc_business_hours" data-toggle="tab">Business Hours</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#doc_reviews" data-toggle="tab">Practitioners</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- /Tab Menu -->
+
+                    <!-- Tab Content -->
+                    <div class="tab-content pt-0">
+                        <!-- Overview Content -->
+                        <div role="tabpanel" id="doc_overview" class="tab-pane fade show active">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-9">
+                                    <!-- About Details -->
+                                    {% if clinic.clinic_code %}
+                                    <div class="widget about-widget">
+                                        <h4 class="widget-title">Clinic Code</h4>
+                                        <p>{{ clinic.clinic_code }}</p>
+                                    </div>
+                                    {% endif %}
+                                    <!-- /About Details -->
+
+                                    <!-- Education Details -->
+                                    <div class="widget education-widget">
+                                        <h4 class="widget-title">Basic</h4>
+                                        <div class="experience-box">
+                                            <ul class="experience-list">
+                                                {% for specialization in clinic.clinic_specialization.all %}
+                                                    <li>
+                                                        <div class="experience-user">
+                                                            <div class="before-circle"></div>
+                                                        </div>
+                                                        <div class="experience-content">
+                                                            <div class="timeline-content">
+                                                                <a href="#" class="name">{{ specialization }}</a>
+                                                                <div>{{ education.degree }}</div>
+                                                                <span class="time">{{ education.year_of_completion }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% empty %}
+                                                    <li>No Basic information available.</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- /Education Details -->
+
+                                    <!-- Experience Details -->
+                                    <div class="widget experience-widget">
+                                        <h4 class="widget-title">Advanced</h4>
+                                        <div class="experience-box">
+                                            <ul class="experience-list">
+                                                {% for experience in doctor.experiences.all %}
+                                                    <li>
+                                                        <div class="experience-user">
+                                                            <div class="before-circle"></div>
+                                                        </div>
+                                                        <div class="experience-content">
+                                                            <div class="timeline-content">
+                                                                <a href="#" class="name">{{ experience.institution }}</a>
+                                                                <div>{{ experience.designation }}</div>
+                                                                <span class="time">{{ experience.from_year }} - {% if experience.to_year %}{{ experience.to_year }}{% else %}Present{% endif %}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% empty %}
+                                                    <li>No Advanced information available.</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- /Experience Details -->
+
+                                    {% if clinic.clinic_specialization %}
+                                        <!-- Specializations List -->
+                                        <div class="service-list">
+                                            <h4>Specialization</h4>
+                                            <ul class="clearfix">
+                                                <li>{{ clinic.clinic_specialization }}</li>
+                                            </ul>
+                                        </div>
+                                        <!-- /Specializations List -->
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Overview Content -->
+
+                        <!-- Business Hours Content -->
+                        <div role="tabpanel" id="doc_business_hours" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-md-6 offset-md-3">
+                                    <!-- Business Hours Widget -->
+                                    <div class="widget business-widget">
+                                        <div class="widget-content">
+                                            <div class="listing-hours">
+                                                {% for day, schedule in business_hours.items %}
+                                                <div class="listing-day {% if day == current_day %}current{% endif %}">
+                                                    <div class="day">{{ day }}</div>
+                                                    <div class="time-items">
+                                                        {% if schedule %}
+                                                            {% for slot in schedule %}
+                                                                <span class="time">{{ slot.start|time_12hr }} - {{ slot.end|time_12hr }}</span>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <span class="time">
+                                                                <span class="badge bg-danger-light">Closed</span>
+                                                            </span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Business Hours Widget -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Business Hours Content -->
+
+                        <!-- Reviews Content -->
+                        <div role="tabpanel" id="doc_reviews" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+
+                             <div class="widget reviews-widget">
+                                         <h4 class="widget-title">Location</h4>
+                                         <div class="widget-content">
+                                             <div class="card">
+                                                 <div class="card-body">
+                              {{ clinic.clinic_location }}
+
+
+                    </div></div></div></div>
+                                    <!-- Reviews Widget -->
+                                    <div class="widget reviews-widget">
+                                        <h4 class="widget-title">Reviews</h4>
+                                        <div class="widget-content">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title d-flex justify-content-between">
+                                                     
+                                                        <span class="average-rating">
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 1 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 2 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 3 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 4 %}text-yellow{% endif %}"></i>
+                                                            <i class="fas fa-star {% if doctor.average_rating >= 5 %}text-yellow{% endif %}"></i>
+                                                            <span>{{ clinic.reviews_received.count }} </span>
+                                                        </span>
+                          
+
+
+                                                    {% for review in clinic.reviews_received.all %}
+                                                        <div class="review-list">
+                                                            <div class="review-item">
+                                                                <div class="review-header d-flex justify-content-between">
+                                                                    <div class="reviewer-info">
+                                                                        <div class="reviewer-img">
+                                                                            <img src="{{ review.patient.profile.image }}" class="avatar-sm rounded-circle" alt="Patient">
+                                                                        </div>
+                                                                        <h5>{{ review.patient.get_full_name }}</h5>
+                                                                        <small class="review-date">{{ review.created_at|date }}</small>
+                                                                    </div>
+                                                                    <div class="review-rating">
+                                                                        {% for i in "12345"|make_list %}
+                                                                            <i class="fas fa-star {% if forloop.counter <= review.rating %}text-yellow{% endif %}"></i>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                                <p class="review-text mt-2">{{ review.review }}</p>
+                                                            </div>
+                                                        </div>
+                                                    {% empty %}
+                                                        <p class="text-muted py-8">No reviews yet.</p>
+                                                    {% endfor %}
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <!-- /Reviews Widget -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Reviews Content -->
+
+                    </div>
+                    <!-- /Tab Content -->
+                </div>
+            </div>
+            <!-- /Doctor Details Tab -->
+        </div>
+    </div>
+    <!-- /Page Content -->
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'account/base-fullscreen.html' %}
+{% load static %}
+{% load account %}
+ 
+  
+{% block content %}
+{% block overlay %}
+
+  <div class="min-height-300 bg-gradient-primary position-absolute mb-8 w-100">
+    
+  </div>
+{% endblock overlay %}
+<!-- Appointment Start -->
+<div class="container-xxl py-8">
+    <div class="row">
+    <div class="col-sm-20">
+    <div class="card card- table">
+    <div class="card-body">
+
+        {% if messages %}
+        {% for message in messages %}
+            <div class="p-3 m-3 alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+        {% endfor %}
+    {% endif %}
+  <h4 class="sub-title">Search Appointment </h4>
+            <form  method="GET">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label class="col-sm-6 col-form-label">Search By Appointment Full Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="query" name="query" class="form-control" required="">
+                    </div>
+                </div>
+               
+             
+                <button type="submit" style="width:50%" class="btn btn-primary  ">Search</button>
+                        </form>
+                    
+                        </div>
+
+        <section class="newsletter" aria-label="newsletter">
+        <div class="container">
+
+    <div class="card card-table">
+    <div class="card-body">
+    <div class="table-responsive">
+    <table class="table table-hover table-center mb-0 datatable">
+    <thead>
+    <tr>
+        {% if patient %}
+    <th>No.</th>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Creation on</th>
+    <th>Status</th>
+    <th class="text-right">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for i in patient %}
+    <tr>
+
+    <td>{{i.appointment_number}}</td>
+    <td>{{i.fullname}}</td>
+    <td>{{i.date_of_appointment}}</td>
+    <td>{{i.time_of_appointment}}</td>
+    <td>{{i.created_at}}</td>
+    {% if i.status == '0' %}
+                                                <td>Not Updated Yet</td>
+                                                {% else %}
+                                                <td>{{ i.status}}</td>{% endif %}
+    <td class="text-right">
+    <div class="actions">
+    <a href="{% url 'dashboard:patient_appointment_details' i.id i.appointment_number %}">
+    <i class="btn btn-primary btn-block">View</i>
+    </a>
+
+    </div>
+    </td>
+    </tr> {% endfor %}
+
+    </tbody>
+    </table>
+    {% else %}
+    {% if query %}
+        <p style="font-size: 20px;color: blue;text-align: center;">No records found for: "{{ query }}"</p>
+
+    {% endif %}
+
+    {% endif %}
+
+
+    </div>
+    </div>
+    </div>
+
+        </div>
+      </section>
+   </div>
+    </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

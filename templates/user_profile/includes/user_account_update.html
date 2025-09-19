@@ -1,0 +1,61 @@
+ {% extends 'user_profile/includes/patient-sidebar.html' %}
+ {% load static %}
+ 
+  {% block main %}
+
+ <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+  <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+  <form method="post" action="{% url 'update-basic-information' %}" enctype="multipart/form-data" novalidate class="profile-update-form pb-4 w-100" id="profileUpdateForm">
+                                                {% csrf_token %}
+                                                <!-- Profile Photo Section -->
+                                  <div class="row ">
+
+                                       <!-- Basic Information -->
+                                  <div class="col-12">
+                                <div class="card custom-form-card" id="basicInfoSection">
+                                   <div class="card-header">
+                                <h4 class="card-title">Basic Information</h4>
+                                             </div>
+                                             <div class="card-body">  
+                                             <div class="row ">
+                                                     <!-- ...existing basic information fields... -->
+
+                                                     {% for field in form %}
+            {% if field.name in 'first_name,last_name,profile_photo,username,email,member_code,mobile_number,national_id'|stringformat:'s'|slice:',' %}
+                                                             <div class="col-md-6">
+                                                                 <div class="form-group  custom-input-group">
+
+<label class="form-label">{{ field.label }} {% if field.field.required %}
+                                        <span class="text-danger">*</span>{% endif %}</label>
+                
+                                                                     {{ field }}
+
+          						    {{ field.media }}
+
+                                                                     {% if field.errors %}
+                                                                         <div class="error-feedback">
+                                                                             {% for error in field.errors %}
+                                                                                 {{ error }}
+                                                                             {% endfor %}
+                                                                         </div>
+                                                                     {% endif %}
+                                                                 </div>
+                                                             </div>
+                                                         {% endif %}
+                                                     {% endfor %}
+
+
+                                    <hr class="horizontal dark">
+
+                                                    <div class="card">
+
+                         <button class="btn btn-primary btn-sn ms-auto">Update Account Now</button>
+       
+                            
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                       </form>
+ {% endblock %}
+

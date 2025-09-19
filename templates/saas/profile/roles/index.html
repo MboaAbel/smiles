@@ -1,0 +1,43 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}Roles{% endblock %}
+
+{% block saas_content %}
+<roledescr-list inline-template id="role-list-container">
+  <div saas-organization="{{organization.slug}}">
+    <h2 v-show="!itemsLoaded">Please wait...</h2>
+    <div v-show="itemsLoaded" v-cloak>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="entry in items.results">
+            <td><a v-bind:href="entry.slug">[[entry.title]]</a></td>
+            <td><button type="button"
+                v-show="!entry.is_global">Delete</button>
+              <span v-show="entry.is_global">Globally defined</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- modals -->
+    <hr />
+    <form class="form-horizontal" @submit.prevent="save">
+      <h2>Add a new type of role</h2>
+      <div>
+        <label>Title</label>
+        <input v-model="newItem.title"
+               name="name" type="text" max-length="150"
+               placeholder="ex: Sales associate"
+               autofocus />
+      </div>
+      <button type="submit">Create role</button>
+    </form>
+  </div>
+</roledescr-list>
+{% endblock %}

@@ -1,0 +1,96 @@
+ {% extends 'user_profile/includes/patient-sidebar.html' %}
+{% load static %}
+
+{% block main %}
+
+
+
+     <!-- Medical Information -->
+       {% load static %}
+		  <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+		  <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+              
+
+
+       <form method="post" action="{% url 'update-profile-information' %}" enctype="multipart/form-data" novalidate class="profile-update-form pb-4 w-100" id="profileUpdateForm">
+                    {% csrf_token %}
+                     <div class="col-12">
+                                     <div class="card custom-form-card" id="medicalInfoSection">
+                              <div class="card-header">
+                <h4 class="card-title"><a href="{% url 'doctors:profile-update' %}"> Medical Information</a></h4>
+                                         </div>
+                                         <div class="card-body">
+                                             <div class="row ">
+                                                 {% for field in form %}
+                                                     {% if field.name in 'medical_conditions,blood_group,allergies'|stringformat:'s'|slice:',' %}
+                                                         <div class="col-md-8">
+                                                             <div class="form-group custom-input-group">
+                                                                 <label class="form-label">{{ field.label }}</label>
+                                                                 {{ field }}
+                                                                {{ field.media }}
+                                                                 {% if field.errors %}
+                                                                     <div class="error-feedback">
+                                                                         {% for error in field.errors %}
+                                                                             {{ error }}
+                                                                         {% endfor %}
+                                                                     </div>
+                                                                 {% endif %}
+                                                             </div>
+                                                         </div>
+                                                     {% endif %}
+                                                 {% endfor %}
+                             <hr class="horizontal dark">
+                                                    <div class="card">
+                   
+            <hr class="horizontal dark">
+                                 <!-- Address Information -->
+     <div class="card-header">
+     <h4 class="card-title">
+     <a href="{% url 'doctors:profile-update' %}"> Address Information</a></h4>    
+                                   </div>             
+             
+                      <div class="d-flex align-items-center">
+                                    <div class="card-body">
+                                             <div class="row ">
+                                                 {% for field in form %}
+                                                     {% if field.name in 'town_near,state,postal_code,county,country,bio,about'|stringformat:'s'|slice:',' %}
+                                                         <div class="{% if field.name == 'address' %}col-md-6{% else %}col-md-6{% endif %}">
+                                                             <div class="form-group custom-input-group">
+                                                                 <label class="form-label">{{ field.label }}</label>
+                                                                 {{ field }}
+                                                                 {% if field.errors %}
+                                                                     <div class="error-feedback">
+                                                                         {% for error in field.errors %}
+                                                                             {{ error }}
+                                                                         {% endfor %}
+                                                                     </div>
+                                                                 {% endif %}
+                                                             </div>
+                                                         </div>
+                                                     {% endif %}
+                                                 {% endfor %}
+
+
+ 
+                                                                        </div>
+                                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                <div class="card-header pb-0">
+
+                                   <div class="d-flex align-items-center">
+                         <button class=" w-100 btn btn-primary btn-sm ms-auto">Update</button>
+                                                        </div>
+                                                         </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+
+                          </form>
+                                                    
+
+            <hr class="horizontal dark">
+{% endblock %}

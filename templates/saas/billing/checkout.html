@@ -1,0 +1,157 @@
+{% extends "saas/base.html" %}
+
+{% block saas_content %}
+<checkout inline-template id="checkout-container">
+  <div>
+    <form @submit.prevent="redeem" v-if="!items.claim_code">
+      <input name="code" type="text" placeholder="Coupon code" v-model="coupon">
+      <button type="submit" class="submit-code">Redeem</button>
+    </form>
+    <form @submit.prevent="nextStep">
+      <table>
+        <tbody>
+          <tr v-for="(entry, entryIndex) in items.results">
+            <td>
+              <em>[[entry.subscription.plan.title]] from
+                [[entry.subscription.plan.profile.printable_name]]</em>
+              <button type="button"
+                      @click="remove(entry.subscription.plan.slug)"
+                      v-if="!items.claim_code">delete</button>
+              <table>
+                <tbody>
+                  {# show lines #}
+                  <tr class="invoice-item" v-for="line in entry.lines">
+                    <td></td>
+                    <td class="line-amount text-right">[[line.amount]]</td>
+                    <td class="line-descr" v-html="line.description"></td>
+                  </tr>
+
+                  {# show options #}
+                  <tr class="py-0" v-if="entry.options && entry.options.length > 0">
+                    <th colspan="2" class="font-weight-normal">Payment Options</th>
+                    <th class="font-weight-normal text-right">Totals</th>
+                  </tr>
+                  <tr v-for="(line, index) in entry.options">
+                    <td>
+                      <input type="radio" @change="optionSelected(entry.subscription.plan.slug, index + 1)" :checked="isOptionSelected(entry.subscription.plan.slug, index + 1)"></input>
+                    </td>
+                    <td class="line-amount text-right">[[line.amount]]</td>
+                    <td class="line-descr" v-html="line.description"></td>
+                  </tr>
+
+                  {# is_bulk_buyer #}
+                  <tr class="seat" v-show="optionsConfirmed && !seatsConfirmed && isLastUserPlan(entryIndex)">
+                    <td></td>
+                    <td class="row">
+                      <div class="col-md-6">
+                        <input class="form-control seat-fullname" type="text" placeholder="Full name (i.e. first and last names)" v-model="planUser(entry.subscription.plan.slug).fullName" />
+                      </div>
+                      <div class="col-md-6">
+                        <input class="form-control seat-email" type="text" placeholder="E-mail address" v-model="planUser(entry.subscription.plan.slug).email" />
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-primary add-seat" type="button" @click.prevent="addPlanUser(entry.subscription.plan.slug)">Add</button>
+                    </td>
+                  </tr>
+                  <tr v-show="optionsConfirmed && !seatsConfirmed && isLastUserPlan(entryIndex)">
+                    <td colspan="2">
+                      <label>Upload CSV:</label>
+                      <input class="btn btn-lnk" @change="fileChanged(entry.subscription.plan.slug, $event)" type="file" />
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-primary" type="button" @click="bulkImport(entry.subscription.plan.slug)">Upload</button>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tfoot>
+            <tr>
+              <th class="total-amount">
+                [[linesPrice[0] ]] [[linesPrice[1] ]]
+              </th>
+              <th>Total</th>
+            </tr>
+          </tfoot>
+        </tbody>
+      </table>
+      <section id="info" v-if="items.state && items.state != 'created'">
+        <dl>
+          <dt>Status</dt>
+          <dd class="charge-status">[[ items.state == 'done' ? "The charge succeeded." : items.state ]]</dd>
+        </dl>
+        <dl>
+          <dt>Date</dt>
+          <dd>[[ items.created_at ]]</dd>
+        </dl>
+        <dl>
+          <dt>REFERENCE</dt>
+          <dd>#[[ items.processor_key ]]</dd>
+        </dl>
+        <dl>
+          <dt>amount</dt>
+          <dd id="amount-info">[[items.amount]] [[items.unit]]</dd>
+        </dl>
+        <dl>
+          <dt>card</dt>
+          <dd>**** - [[items.last4]]</dd>
+        </dl>
+        <dl>
+          <dt>expires</dt>
+          <dd>[[items.exp_date]]</dd>
+        </dl>
+      </section>
+      <div v-show="allConfirmed"  v-if="items.state && items.state == 'created'">
+        {% block order_card %}
+        {% if RAZORPAY_PUB_KEY %}
+        {% include "saas/_razorpay_checkout.html" %}
+        <div>
+          <button type="submit" class="payment-submit">{% if submit_title %}{{submit_title}}{% else %}Pay Now{% endif %}</button>
+        </div>
+        {% elif FLUTTERWAVE_PUB_KEY %}
+        {% include "saas/_flutterwave_checkout.html" %}
+        {% else %}
+        <div>
+          {% include "saas/_card_use.html" %}
+        </div>
+        {% endif %}
+        {% endblock %}
+      </div>
+    </form>
+  </div>
+</checkout>
+{% endblock %}
+
+{% block saas_bodyscripts %}
+{% if USE_STRIPE_V2 %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+{% else %}
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+{% endif %}
+<script type="text/javascript" charset="utf-8" src="/static/vendor/vue.js"></script>
+<script type="text/javascript">
+Vue.prototype.$itemsPerPage =
+    {% if items_per_page %}{{items_per_page}}{% else %}25{% endif %};
+//Vue.prototype.$sortDirection = ;
+//Vue.prototype.$sortByField = ;
+Vue.prototype.$dateRange = {
+    start_at: "{% if start_at %}{{start_at|isoformat}}{% endif %}",
+    ends_at: "{% if ends_at %}{{ends_at|isoformat}}{% endif %}"
+};
+Vue.prototype.$urls = {% if urls %}{{urls|to_json}}{% else %}{}{% endif %};
+Vue.prototype.$tables = {% if tables %}{{tables|safe}}{% else %}{}{% endif %};
+</script>
+<script type="text/javascript" charset="utf-8" src="/static/vendor/vue-croppa.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/djaodjin-resources-vue.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/djaodjin-saas-vue.js"></script>
+<script type="text/javascript">
+Vue.use(Croppa);
+var app = new Vue({
+  el: '#app',
+  delimiters: ["[[","]]"],
+});
+</script>
+{% endblock %}

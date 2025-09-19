@@ -1,0 +1,79 @@
+{% extends 'appointment/userbase.html' %}
+{% block content %}
+
+
+<!-- Appointment Start -->
+<div class="container-xxl py-10">
+    <div class="container">
+    <div class="row">
+    <div class="col-sm-20">
+    <div class="card card- table">
+    <div class="card-body">
+     {% include 'clinic/includes/messages.html' %}
+    <div class="table-responsive">
+    <table class="table table-hover table-center mb-0 datatable">
+    <thead>
+    <tr>
+   
+    
+    <th class="text-right"></th>
+    <th>Appointment No.</th>
+    <th>Patient Name</th>
+    <th>Creation Date</th>
+    <th>Status</th>
+    
+    </tr>
+    </thead>
+    <tbody>
+        {% for i in patient %}
+    <tr>
+
+    
+    <td class="text-right">
+        <div class="actions">
+        <a href="{% url 'dashboard:patient_appointment_details' i.id i.appointment_number %}">
+        <i class="btn btn-primary btn-block">View</i>
+        </a>
+      
+        </div>
+        </td>
+    <td>JDC-{{i.appointment_number}}</td>
+    <td>{{i.fullname}}</td>
+    <td>{{i.created_at}}</td>
+    {% if i.status == '0' %}
+                                                <td>Not Updated Yet</td>
+                                                {% else %}
+                                                <td>{{ i.status}}</td>{% endif %}
+    
+    </tr> {% endfor %}
+   
+    </tbody>
+    </table>
+    
+<!-- Pagination controls -->
+<div class="pagination" style="padding-top: 20px;padding-bottom: 20px;text-align: center;">
+    <span class="step-links">
+        {% if patient.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ view_appointment.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ patient.number }} of {{ patient.paginator.num_pages }}.
+        </span>
+
+        {% if patient.has_next %}
+            <a href="?page={{ view_appointment.next_page_number }}">Next</a>
+            <a href="?page={{ view_appointment.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

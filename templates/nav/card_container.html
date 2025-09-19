@@ -1,0 +1,55 @@
+{% load static  %}
+{% block content %}
+      <!--=============== REMIXICONS ===============-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+
+      <!--=============== CSS ===============-->
+  <link href="{% static 'nav/css/styles.scss' %}" rel="stylesheet" />        
+  <link href="{% static 'nav/css/styles.css' %}" rel="stylesheet" />
+      
+    <div class="col-12 col-md-6 col-xl-4 mb-4">
+                      <div class="card appointment-card">
+                          
+                           <div class="d-flex justify-content-between">
+              <article class=" card appointment-card card__article {% if doctors.member.open_for_mboka == False %} card-yellow {% elif doctors.member.open_for_mboka == True %} card-green {% endif %}">
+               <img src="{{doctors.member.profile_photo.url}}" style="display: block;mask-image:linear-gradient(to bottom, black 80%, transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 80%,transparent100%);box-decoration-break: clone; border-bottom:none;border-radius-bottom:none;" alt="image" class="card__img">
+               <div class="card__shadow"></div>
+   
+               <div class="card__data">
+                  <h2 class="card__name text-white text-md">{{doctors.member.first_name}}</h2>
+                  <span class="card__profession">{{doctors.clinic_name}}</span>
+               </div>
+   
+               <div class="card__clip">
+                  <i class="ri-menu-4-line"></i>
+               </div>
+
+               <div class="info">
+                  <div class="info__data">
+                     <h2 class="info__name">{{doctors.member.last_name}}</h2>
+                     <p class="info__description">{{doctors.member.profile.about}}</p>
+                   
+                     <a href="{% url 'doctors:doctor-profile' doctors.member.username %}" class="info__button">View Profile</a>
+                  </div>
+   
+                  <div class="info__social">
+                      <a href="https://www.tiktok.com/" target="_blank" class="info__link">
+                         <i class="ri-tiktok-line"></i>
+                      </a>
+                     <a href="https://www.facebook.com/" target="_blank" class="info__link">
+                        <i class="ri-facebook-circle-line"></i>
+                     </a>
+                     <a href="https://www.instagram.com/" target="_blank" class="info__link">
+                        <i class="ri-instagram-line"></i>
+                     </a>
+                     <a href="https://twitter.com/" target="_blank" class="info__link">
+                        <i class="ri-twitter-x-line"></i>
+                     </a>                  
+                     <a href="https://whatsapp.com/" target="_blank" class="info__link">
+                              <i class="ri-whatsapp-line"></i>
+                      </a>
+               </div></div>
+            </article>
+ </div></div> </div>     
+ 
+{% endblock content %}

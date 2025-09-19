@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://smileslot.onrender.com/sitemap.xml

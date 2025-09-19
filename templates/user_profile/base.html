@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmileSlot - {{clinic.email}}</title>
+  <link rel="shortcut icon" href="{% static 'icon/Junction_Dental.png'%}" type="image/svg+xml">
+  <link href="{% static 'user_profile/css/style.css' %}" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap"rel="stylesheet">
+ <header class="header" data-header>
+    {% include 'nav/navbar_logo.html' %}
+  </header>
+</head>
+
+<body id="top">
+
+    <main>
+    <article class="article">
+				
+    <section class="section hero" aria-label="hero">
+        <div class="container">
+
+          <div class="hero-bg" style="background-image: url({% static 'user_profile/images/hero-bg.jpg' %}); ">
+            <div class="hero-content">
+              <h1 class="h1 hero-title">
+                SmileSlot <br><span class="span">Wonderful Smile</span> <br>
+              </h1>
+
+              <p class="hero-text">
+             Best outfit. </p>
+            </div>          </div>
+
+          <div class="hero-form-wrapper">
+            <div class="form-tab">
+
+              <button class="tab-btn" data-tab-btn><a href="{% url 'user_profile_view' %}">Studio</a></button>
+              <button class="tab-btn" data-tab-btn><a href="{% url 'user_profile' %}">Records</a></button>
+              <button class="tab-btn" data-tab-btn><a href="{% url 'pay_stk' %}">Shop</a></button>
+              <button class="tab-btn" data-tab-btn><a href="{% url 'blog_page' %}">Blog</a></button> 
+
+            </div>
+
+            <form action="{% url 'user_search_appointment' %}" style="margin-top:10px;" class="hero-form">
+              <div class="input-wrapper">
+                <input type="search" name="query" id="query" placeholder="Search your appointment" required style="border-radius:20px;" class="input-field">
+
+              </div>
+
+              <!-- <button type="submit" class="btn btn-primary">Search </button> -->
+              
+                {% include 'clinic/includes/messages.html' %}
+               
+
+            </form>
+
+
+          </div>
+
+        </div>
+      </section>
+
+
+
+ {% block content %}
+    {% endblock content %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <a href="https://wa.me/254708534184?text=Hello!%20SmileSlot%20Dental%20would%20like%20to%20inquire%20about%20your%20dental%20services.%20Can%20you%20please%20assist%20me?" style="background-color:#25d366;color:#FFF;text-align:center;font-size:12px;box-shadow: 2px 2px 3px #999;z-index:100;" class="back-top-btn float " target="_blank" aria-label="back to top" data-back-top-btn>
+    <i class="fa fa-whatsapp "> whatsapp</i>
+    </a>
+   
+    
+    
+    </article>
+    </main></body>
+{% include 'user_profile/includes/scripts.html' %}
+
+</html>

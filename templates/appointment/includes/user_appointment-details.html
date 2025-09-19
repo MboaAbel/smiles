@@ -1,0 +1,107 @@
+{% extends 'appointment/userbase.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Appointment Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+            <div class="card card-table">
+        
+            <div class="card-body">
+                  {%  include 'clinic/includes/messages.html' %}
+
+            <div class="table-responsive">
+                {% for i in patientdetails %}
+                <h6>Below is the details of Appointment Number: {{i.appointment_number}}  <br> <strong style="padding-left: 20px;">Date: {{i.date_of_appointment}}</strong></h6>
+                <br>
+                <table class="table table-hover table-center mb-0 datatable">
+                  
+                   
+                    <tr></tr>
+                      
+                    <tr>
+                          
+                          <th>Patient Name</th>
+                          <td>{{i.fullname}}</td>
+                          <th>Patient Contact Number</th>
+                          <td>{{i.mobile_number}}</td>
+                        </tr>
+                        <tr>
+                          <th>Patient Email</th>
+                          <td>{{i.email}}</td>
+                          <th>Date of Appointment</th>
+                          <td>{{i.date_of_appointment}}</td>
+                        </tr>
+                        <tr>
+                          <th>Date of Time</th>
+                          <td>{{i.time_of_appointment}}</td>
+                          <th>Message</th>
+                          <td>{{i.additional_msg}}</td>
+ </tr>
+
+
+                        <tr>
+                                            
+                          {% if i.status == '0' %}
+                          <th>Doctor Remark</th>
+                          <td>Not Updatet Yet</td>
+                          {% else %}
+
+
+                          <th>Doctor Remark</th>
+                          <td>{{ i.remark}}</td>{% endif %}
+                          
+                            {% if i.status == '0' %}
+                            <th>Staus</th>
+                            <td>Not Updatet Yet</td>
+                            {% else %}
+                            <th>Status</th>
+                            <td>{{ i.status}}</td> {% endif %}
+                            </tr>
+              
+                            <tr>
+                                {% if i.status == 'Completed' %}
+                                <th>Prescribed Medicine</th>
+                                <td>{{ i.prescription}}</td>
+                                {% else %}
+                                <th>Prescribed Medicine</th>
+                                <td>Not Prescribed Yet</td> {% endif %}
+
+                              {% if i.status == '0' %}
+                            <th>Service Inquiry</th>
+                             <td>Not Selected Yet</td>
+                          {% else %}
+
+                          <th>Service Inquiry</th>
+                        <td>{{i.worry_id}}</td>
+                    {% endif %}
+
+                    </tr>
+
+                                <tr>
+                                  {% if i.status == 'Completed' %}
+                                  <th>Recommended Test</th>
+                                  <td>{{ i.recommendedtest}}</td>
+                                  {% else %}
+                                  <th>Recommended Test</th>
+                                  <td>Not Recommended Yet</td> {% endif %}
+                                  </tr>
+                        
+                 
+                  </table>
+                  {% endfor %}
+        
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+    </div>
+</div>
+<!-- Appointment End -->
+
+{% endblock %}
+

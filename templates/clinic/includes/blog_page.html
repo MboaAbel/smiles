@@ -1,0 +1,15 @@
+{% extends 'nav/taskbar.html' %}
+  {% load static %}
+  {% load account %}
+  {% block main %}
+          {% include 'clinic/includes/blog.html' %}
+           <link rel="stylesheet" href="{% static 'bar/css/style.css'%}">
+              <!--=============== HOME ===============-->
+             <section class="container section section__height" id="home">
+                    <h2 class="section__title">{{ user.get_full_name }}</h2>
+                    <button class="section__title btn bg-gradient-success w-100"> <a href="{% url 'blog_post' %}"> New Blog </a></button>            
+             </section>
+
+
+ {% endblock %}
+

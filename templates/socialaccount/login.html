@@ -1,0 +1,58 @@
+{% extends "socialaccount/base_entrance.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+
+ {% block content %}
+  {% include 'account/includes/navigation.html' %}
+<main class="main-content position-relative max-height-vh-100  border-radius-lg ">
+       <section>
+        <div class="page-header min-vh-100">
+          <div class="container">
+            <div class="row">
+              <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+                <div class="card card-plain">
+               <div class="mt-6">
+                 {% include 'clinic/includes/messages.html' %}
+              </div>
+               <div class="card-header pb-0 text-start font-weight-bolder">
+           
+    {% if process == "connect" %}
+        {% element h1 %}
+            {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+        {% endelement %}
+        {% element p %}
+            {% blocktrans with provider.name as provider %}You are about to connect a new third-party account from {{ provider }}.{% endblocktrans %}
+        {% endelement %}
+    {% else %}
+        {% element h1 %}
+            {% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
+        {% endelement %}
+        {% element p %}
+            {% blocktrans with provider.name as provider %}You are about to sign in using a third-party account from {{ provider }}.{% endblocktrans %}
+        {% endelement %}
+    {% endif %}
+</div></div>
+
+  <div class="card-body">
+  {% element form method="post" no_visible_fields=True %}
+      {% slot actions %}
+          {% csrf_token %}
+       <div class="d-grid btn-primary">
+          {% element button type="submit" class="btn btn-lg btn-primary w-100 mt-4 mb-0" %}
+              {% trans "Continue" %}
+          {% endelement %}
+ </div>
+      {% endslot %}
+  {% endelement %}        
+     
+{% endblock content %}
+</div>     
+  </div>
+</div>
+         </div>
+       </div>
+     </section>
+   </main>

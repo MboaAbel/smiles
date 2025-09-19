@@ -1,0 +1,54 @@
+{% extends 'nav/taskbar.html' %}
+ {% load static %}
+ {% load account %}
+ {% block content %}
+
+    <link rel="stylesheet" href="{% static 'clinic/css/style.css'%}">
+  <section class="section doctor " style="padding-bottom:5px;background-image: url('{% static 'clinic/images/hero-bg.png' %}'); width:100%;display: block;box-decoration-break: clone;mask-image:linear-gradient(to bottom, black 80%, transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 80%, transparent 100%)"  aria-label="doctor">
+      <div class="container">
+          <p class="section-subtitle text-center">Service Providers Network</p>
+          <h2 class="h2 section-title text-center">Onboarded. </h2>
+ 
+          <ul class="has-scrollbar">
+          <!-- Clinics Widget -->
+
+          {% for clinic in clinics %}
+          <li class="scrollbar-item">
+              <div class="doctor-card">
+                  <div  href="{% url 'clinic-profile' clinic.clinic_code %}"class="card-banner img-holder" style="--width: 460; --height: 500; background-color: rgba(0,0,0,0.1);border-radius: 24px; backdrop-filter: blur(10px); border: none; z-index: 10; display: flex; box-shadow: 20px 20px 80px 20px rgba(0,0,0,0.1);">
+                      <img src="{{ clinic.clinic_logo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
+                  </div>
+                  <h3 class="h3">
+                      <a href="{% url 'clinic-profile' clinic.clinic_code %}" class="card-title"> {{ clinic.clinic_name }}</a>
+                  </h3>
+                  <a href="{{ clinic.get_smile_link }}">
+                  <p class=" card-subtitle">{{ clinic.get_smile_link }}</p> </a>
+                  <p class="card-subtitle">{{ clinic.clinic_email }}</p>
+                  <p class="card-subtitle">{{ clinic.doctor.get_clinic_profile }}</p>
+
+                  <ul class="card-social-list">
+                      <li>
+                          <a href="/" class="card-social-link">
+                              <ion-icon name="logo-facebook"></ion-icon>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#" class="card-social-link">
+                              <ion-icon name="logo-twitter"></ion-icon>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#" class="card-social-link">
+                              <ion-icon name="logo-instagram"></ion-icon>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </li>
+                  {% endfor %}
+
+          <!-- /Clinics Widget -->
+         </ul>
+     </div>
+ </section>
+{% endblock %}

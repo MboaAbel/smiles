@@ -1,0 +1,10 @@
+{% extends "billings/base.html" %}
+
+{% block main %}
+            <div class="col-md-6 col-lg-8 col-xl-9">
+     <a href="/bills/pricing/" class="{% if request.resolver_match.url_name == 'appointments' %}active{% endif %}btn btn-block apt-btn btn-outline-primary bg-success-light ">
+                                     <i class="ni ni-credit-card  me-sm-4"></i>
+                                              <span>Pricing</span>
+                                          </a>
+</div>
+{% endblock %}

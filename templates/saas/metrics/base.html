@@ -1,0 +1,88 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}
+{{title}} for {{organization.printable_name}}
+{% endblock %}
+
+{% block saas_content %}
+<metrics-charts inline-template id="metrics-container">
+  <div id="metrics-table">
+    <div><!-- choose report date -->
+      <div class="date-chooser">
+        <span>To</span>
+        <input name="ends_at"
+           type="date"
+           v-model="_ends_at"
+           v-on:input="prepareCurrentTabData"></input>
+        <select name="timezone"
+           v-model="timezone"
+           @change="prepareCurrentTabData">
+          <option value="local">Local</option>
+          <option value="utc">UTC</option>
+        </select>
+        <select name="period_type"
+           v-model="periodType"
+           @change="prepareCurrentTabData">
+          <option value="hourly">Hourly</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+    </div><!-- /choose report date -->
+    <div :id="table.key"
+         v-for="(table, index) in tables"
+         v-bind:key="table.key">
+      <a v-bind:href="'#' + table.key"
+         @click="tabClicked(index)"><h2>[[table.title]]</h2></a>
+      <div>
+        <a :href="[[table.download + getQueryString(['page'])]]" target="_blank">Download</a>
+      </div>
+      <div class="chart-content">
+      </div>
+      <!-- Display as a table -->
+      <div v-if="!table.data">
+        Loading ... (click the title/tab to load)
+      </div>
+      <div v-if="table.data">
+        <table id="data-in-rows">
+          <tr>
+            <td></td>
+            <th v-for="col in table.data[0].values">
+              [[ asPeriodHeading(col[0], params.period_type, '{{organization.default_timezone}}') ]]
+            </th>
+          </tr>
+          <tr v-bind:id="row.slug"
+              v-for="row in table.data">
+            <td v-if="row.location">
+              <span>[[row.is_active ? 'Active': 'Inactive' ]]</span>
+              <a v-bind:href="row.location">[[row.title]]</a>
+            </td>
+            <td v-if="!row.location">[[row.title]]</td>
+            <td v-for="col in row.values">
+              [[col[1] ]] [[table.unit]] ([[table.scale]])
+            </td>
+          </tr>
+          {% block metrics_extra_data %}
+          {% endblock %}
+        </table>
+      </div>
+    </div>
+    {% block metrics_extra_info %}
+    {% endblock %}
+  </div>
+</metrics-charts>
+{% endblock %}
+
+{% block dashboard_bodyscripts %}
+<script type="text/javascript">
+function updateChart(container, data, unit, dataScale, extra) {
+    $(container).text(JSON.stringify(data));
+}
+
+function updateBarChart(container, data, unit, dataScale, extra) {
+    $(container).text(JSON.stringify(data));
+}
+</script>
+{% endblock %}

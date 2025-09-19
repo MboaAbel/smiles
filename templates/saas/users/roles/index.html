@@ -1,0 +1,85 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_title %}Accessible by {{user}}{% endblock %}
+
+{% block saas_content %}
+<role-profile-list inline-template id="accessible-list-container">
+  <div>
+    <div>
+      <span>Filter</span>
+      <input type="text"
+             v-model="params.q" @input="debouncedAutoReload" />
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name <button @click="sortBy('full_name')">[[sortDir('full_name') ? sortDir('full_name') : 'sort']]</button></th>
+          <th>Role <button @click="sortBy('role_name')">[[sortDir('role_name') ? sortDir('role_name') : 'sort']]</button></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-show="!itemsLoaded">
+          <td colspan="3">
+            <h3>Loading...</h3>
+          </td>
+        </tr>
+        <tr v-show="itemsLoaded && items.results.length == 0">
+          <td colspan="3">No profile accessible for {{user}}</td>
+        </tr>
+        <tr v-bind:id="entry.profile.slug" v-for="(entry, index) in items.results" v-show="itemsLoaded && items.results.length > 0" v-cloak>
+          <td>
+            <a v-bind:href="'{{urls.profile_base}}' + entry.profile.slug + '/'">[[entry.profile.printable_name]]</a>
+          </td>
+          <td>
+            [[entry.request_key ? "requested" : entry.role_description.title]]
+            <button @click="acceptGrant(entry)" v-if="entry.accept_grant_api_url">accept</button>
+          </td>
+          <td><button class="remove" @click="remove(index)">remove</button></td>
+        </tr>
+      </tbody>
+    </table>
+    {% include "saas/_paginator.html" %}
+    <!-- modal dialog to add a request to add a role to a user
+         on an profile. -->
+    <div id="add-or-create-btn">
+      <h4>Request access ...</h4>
+      <form id="add-profile" @submit.prevent="submit">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+        <input id="userTypeahead" type="text"
+               name="profile" placeholder="Name or email"
+               autocomplete="off"
+               v-model="unregistered.slug"
+               uib-typeahead="item.slug for item in getCandidates($viewValue)"
+               uib-typeahead-loading="loadingOrganizations"
+               uib-typeahead-template-url="customTemplate.html" />
+        <button type="submit" name="submit">Add</button>
+        <div id="add-profile" v-show="profileRequestDone">
+          <p>
+[[unregistered.full_name]] was not found. This is an opportunity to invite
+a manager for [[unregistered.full_name]] to join {{organization.printable_name}}.
+          </p>
+          <label>To</label>
+          <input id="new-request-email" name="email"
+                 type="text" max-length="150"
+                 placeholder="invitee@example.com" autofocus
+                 v-model="unregistered.email" />
+          <label>The following invite message will be sent:</label>
+          <textarea name="message"
+                    maxlength="255" type="text" rows="10">
+Hello,
+
+I would like to request access to [[unregistered.full_name]].
+
+Thank you,
+- {{request.user.first_name}}
+          </textarea>
+          <button id="create-profile-submit"
+                  type="submit">Request access</button>
+        </div>
+      </form>
+    </div>
+    <!-- end of modal dialog -->
+  </div>
+</role-profile-list>
+{% endblock %}

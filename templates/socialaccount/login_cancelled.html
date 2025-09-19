@@ -1,0 +1,35 @@
+{% extends "socialaccount/base_entrance.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}
+    {% trans "Login Cancelled" %}
+{% endblock head_title %}
+{% block content %}
+  {% include 'account/includes/navigation.html' %}
+ <main class="main-content position-relative max-height-vh-100  border-radius-lg ">
+        <section>
+         <div class="page-header min-vh-100">
+           <div class="container">
+             <div class="row">
+               <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+                 <div class="card card-plain">
+                <div class="mt-6">
+                  {% include 'clinic/includes/messages.html' %}
+               </div>
+                <div class="card-header pb-0 text-start font-weight-bolder">
+    {% element h1 %}
+        {% trans "Login Cancelled" %}
+    {% endelement %}
+    {% url 'account_login' as login_url %}
+    {% element p %}
+        {% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to 
+
+<a class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0" href="/account/3rdparty"">sign in</a>.{% endblocktrans %}
+    {% endelement %}
+</div></div>
+       </div>
+         </div>
+       </div>
+     </section>
+   </main>
+{% endblock content %}

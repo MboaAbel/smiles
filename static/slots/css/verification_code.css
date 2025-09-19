@@ -1,0 +1,113 @@
+/* verification_code_v2.css */
+.vcode-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 20px;
+}
+
+.vcode-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.vcode-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.vcode-instruction {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.vcode-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.vcode-input-group {
+    margin-bottom: 20px;
+}
+
+.vcode-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.vcode-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.vcode-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.vcode-button {
+    background-color: #4a90e2;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.vcode-button:hover {
+    background-color: #3a7bc8;
+}
+
+.vcode-alert {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.vcode-alert-error {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+    border: 1px solid #fbd5d5;
+}
+
+.vcode-alert-success {
+    background-color: #e6fffa;
+    color: #046c4e;
+    border: 1px solid #b2f5ea;
+}
+
+@media (max-width: 480px) {
+    .vcode-card {
+        padding: 30px;
+    }
+
+    .vcode-title {
+        font-size: 22px;
+    }
+
+    .vcode-instruction {
+        font-size: 14px;
+    }
+}

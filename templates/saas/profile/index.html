@@ -1,0 +1,31 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_content %}
+<profile-update inline-template id="profile-container">
+  <div>
+    <form method="post" action="." @submit.prevent="updateProfile">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+      <div>
+        <input type="hidden" name="picture" value="{% if form.instance.picture %}{{form.instance.picture}}{% endif %}">
+        <img :src="formFields.picture" width="100" height="100">
+        <croppa v-model="picture" :width="100" :height="100"></croppa>
+        <button @click.prevent="uploadProfilePicture">Save picture</button>
+      </div>
+      {{form.as_p}}
+      <button type="submit">Update Profile</button>
+    </form>
+    <div id="remove-profile-container">
+      <div id="delete-action">
+        <div id="delete-action-open">
+          <button type="button" id="delete-organization-btn" @click="deleteProfile">Delete</button>
+        </div>
+      </div>
+    </div>
+    {% if user.username == organization.slug %}
+    <button @click="convertToOrganization()">
+        Turn into an organization
+    </button>
+    {% endif %}
+  </div>
+</profile-update>
+{% endblock %}

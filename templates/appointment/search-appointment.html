@@ -1,0 +1,73 @@
+{% extends 'appointment/userbase.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Appointment Start -->
+<div class="container-xxl py-12">
+    <div class="container">
+        <div class="row">
+                                <br>
+
+            <div class="card card-table">
+            <div class="card-body">
+            <div class="table-responsive">
+
+                {%  include 'clinic/includes/messages.html' %}
+            <table class="table table-hover table-center mb-0 datatable">
+            <thead>
+            <tr>
+                {% if patient %}
+            <th>Appointment Number</th>
+            <th>Patient Name</th>
+            <th>Date of Appointment</th>
+            <th>Time of Appointment</th>
+            <th>Creation Date</th>
+            <th>Status</th>
+            <th class="text-right">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for i in patient %}
+            <tr>
+
+            <td>{{i.appointment_number}}</td>
+            <td>{{i.fullname}}</td>
+            <td>{{i.date_of_appointment}}</td>
+            <td>{{i.time_of_appointment}}</td>
+            <td>{{i.created_at}}</td>
+            {% if i.status == '0' %}
+           <td>Not Updated Yet</td>
+                                                        {% else %}
+          <td>{{ i.status}}</td>{% endif %}
+            <td class="text-right">
+            <div class="actions">
+            <a href="{% url 'view_appointment_details' i.id %}">
+            <i class="btn btn-primary btn-block">View</i>
+            </a>
+
+
+            </div>
+            </td>
+            </tr> {% endfor %}
+
+            </tbody>
+            {% else %}
+            {% if query %}
+                <p style="font-size: 20px;color: blue;text-align: center;">No records found for: "{{ query }}"</p>
+
+            {% endif %}
+
+            {% endif %}
+            </table>
+
+
+
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+    </div>
+<!-- Appointment End -->
+
+{% endblock %}

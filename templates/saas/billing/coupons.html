@@ -1,0 +1,101 @@
+{% extends "saas/base_dashboard.html" %}
+
+{% block saas_content %}
+<coupon-list inline-template id="coupon-list-container">
+  <div>
+    <h1>Coupons</h1>
+    <div>
+      {% include "saas/_filter.html" %}
+      <div>
+        <a id="download" role="button"
+         v-bind:href="'{{urls.provider.download_coupons}}' + getQueryString(['page'])">CSV Download</a>
+      </div>
+      <h2 v-show="!itemsLoaded">Please wait...</h2>
+      <h2 v-show="itemsLoaded && items.results.length == 0">No Coupons yet</h2>
+      <table v-show="itemsLoaded && items.results.length > 0">
+          <thead>
+            <tr>
+              <th>Code <button @click="sortBy('code')">[[sortDir('code') ? sortDir('code') : 'sort']]</button></th>
+              <th>Percent <button @click="sortBy('amount')">[[sortDir('amount') ? sortDir('amount') : 'sort']]</button></th>
+              <th>Expires At <button @click="sortBy('ends_at')">[[sortDir('ends_at') ? sortDir('ends_at') : 'sort']]</button></th>
+              <th>Description <button @click="sortBy('description')">[[sortDir('description') ? sortDir('description') : 'sort']]</button></th>
+              <th>Created At <button @click="sortBy('created_at')">[[sortDir('created_at') ? sortDir('created_at') : 'sort']]</button></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tr>
+            <td colspan="5">
+              <form id="couponCreate" method="post" @submit.prevent="save">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                <input type="text" placeholder="Code"
+                       name="code"
+                       v-model="newCoupon.code"></input>
+                <input type="text" placeholder="Percent"
+                       name="discount_value"
+                       v-model="newCoupon.discount_value"></input>
+                <select class="form-control form-select input-group-suffix"
+                    name="discount_type" v-model="newCoupon.discount_type">
+                  <option value="percentage">%</option>
+                  <option value="currency">Currency (ex: usd)</option>
+                  <option value="period">Period (ex: month)</option>
+                </select>
+                <button type="submit">Create Coupon</button>
+              </form>
+            </td>
+          </tr>
+          <tr v-bind:id="coupon.code" v-for="(coupon, index) in items.results" v-cloak>
+            <td><a v-bind:href="'{{urls.provider.metrics_coupons}}' + coupon.code + '/'">[[coupon.code]]</a></td>
+                <td>[[coupon.discount_type == 'period' ? ('' + coupon.discount_value + ' period(s)') : (coupon.discount_type == 'currency' ? '$' + (coupon.discount_value / 100).toFixed(0) : ('' + (coupon.discount_value / 100).toFixed(0) + '%'))]]</td>
+                <td v-if="coupon.ends_at">[[coupon.ends_at]]
+                </td>
+                <td v-if="!coupon.ends_at">Never
+                </td>
+                <td>
+                    <span v-show="!coupon.edit_description"
+                          @click="editDescription(coupon, index)">[[coupon.description]] (click to edit)</span>
+                    <input id="input_description" type="text"
+                           uib-tooltip="Edit description and press 'Enter'"
+                           uib-tooltip-trigger="focus"
+                           uib-tooltip-placement="top"
+                           v-show="coupon.edit_description"
+                           @blur="saveDescription(coupon)"
+                           @keyup.13="saveDescription(coupon)"
+                           v-model="coupon.description"
+                           tooltip="Edit description here"
+                           tooltip-trigger="focus"
+                           tooltip-placement="top">
+                </td>
+                <td>
+                   <span v-show="!coupon._editAttempts">Use limit:</span>
+                   <span @click="editAttempts(coupon)"
+                     v-show="!coupon._editAttempts">
+                     [[coupon.nb_attempts ? coupon.nb_attempts : 'No limit']]
+                   </span>
+                   <input type="text" @blur="saveAttempts(coupon)"
+                       @keyup.13="saveAttempts(coupon)"
+                       v-model="coupon.nb_attempts"
+                       :ref="'editAttempts_' + coupon.code"
+                       v-show="coupon._editAttempts">
+                </td>
+                <td>
+                   <span v-show="!coupon._editPlan">Plan:</span>
+                   <span @click="editPlan(coupon)"
+                     v-show="!coupon._editPlan">
+                     [[coupon.plan ? planTitle(coupon.plan) : "No Plan"]]
+                   </span>
+                   <select @blur="savePlan(coupon)" @keyup.13="savePlan(coupon)"
+                       v-model="coupon.plan"
+                       :ref="'editPlan_' + coupon.code"
+                       v-show="coupon._editPlan">
+                         <option value="">No Plan</option>
+                         <option :value="plan.slug" v-for="plan in plans">[[plan.title]]</option>
+                   </select>
+                </td>
+                <td>[[coupon.created_at]]</td>
+                <td><button @click="remove(index)">Remove</button></td>
+            </tr>
+        </table>
+    </div>
+  </div>
+</coupon-list>
+{% endblock %}

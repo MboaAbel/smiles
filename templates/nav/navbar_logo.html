@@ -1,0 +1,79 @@
+{% load static  %}
+        <!--=============== BOXICONS ===============-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+       <link href="{% static 'bar/css/styles.css' %}" rel="stylesheet" />
+        <!--=============== CSS ===============-->
+   
+        <link href="{% static 'accounts/css/nucleo-icons.css' %}" rel="stylesheet" />
+      <!-- Font Awesome Icons -->
+              <!--=============== HEADER ===============-->
+        <header style="padding-top:5px; padding-bottom:4px;" class="header" id="header">
+            <nav class="nav container blur  shadow-5  z-index-3">
+                <a href="#" class="nav__logo">SmileSlot</a>
+
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="/" class="nav__link active-link">
+                                <i class='bx bx-home-alt nav__icon'></i>
+                                <span class="nav__name">Home</span>
+                            </a>
+                        </li>
+                        
+                        <li class="nav__item">
+                            <a href="{% url 'dashboard:mpesa' %}" class="nav__link">
+                                <i class='bx bx-book-alt nav__icon'></i>
+                                <span class="nav__name">wallet</span>
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'user_profile_view'%}" class="nav__link">
+                                <i class='bx bx-user nav__icon'></i>
+                                <span class="nav__name">Profile</span>
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="/clinics" class="nav__link">
+                                <i class='bx bx-briefcase-alt nav__icon'></i>
+                                <span class="nav__name">Clinic</span>
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="/blog" class="nav__link">
+                                <i class='bx bx-message-square-detail nav__icon'></i>
+                                <span class="nav__name">blog</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+   {% if request.user.is_authenticated %}
+   {% if request.user.is_superuser %}
+
+<a href="{% url 'dashboard:doctor_home' %}">  <img src="{{ user.profile_photo.url}}" alt="smileslot" class="nav__img py-2"> </a>
+           {{ request.user.get_full_name|default:request.user.username }}
+       </a>
+   {% elif request.user.is_staff %}
+  <a href="{% url 'dashboard:doctor_home' %}">  <img src="{{ user.profile_photo.url}}" alt="smileslot" class="nav__img "> </a>
+           {{ request.user.get_full_name|default:request.user.username }}
+       </a>
+   {% else %}
+ <a href="{% url 'update-basic-information' %}">  <img src="{{ user.profile_photo.url}}" alt="smileslot" class="nav__img py-2"> </a>
+           {{ request.user.get_full_name|default:request.user.username }}
+      </a>
+  {% endif %}
+{% else %}
+ <a href="{% url 'register' %}">  <img src="{% static 'icon/smileslot.png' %}" alt="smileslot" class="nav__img py-2"></a>
+{% endif %}
+
+       </nav></div>
+        </header>
+ 
+
+        <!--=============== MAIN JS ===============-->
+         <script src="{% static 'bar/bar/js/main.js' %}"></script>
