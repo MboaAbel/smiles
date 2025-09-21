@@ -22,13 +22,15 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = [
      '.onrender.com',
-     '.localhost'
+     '.localhost',
+     '.sleek.work.gd'
  ]
 if DEBUG:
      ALLOWED_HOSTS += [
          'localhost',
          '.localhost',
-         '.onrender.com'
+         '.onrender.com',
+         '.sleek.work.gd'
      ]
 
 

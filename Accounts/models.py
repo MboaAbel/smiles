@@ -17,6 +17,10 @@ def generate_service_id():
     alphanumeric = string.ascii_uppercase + string.digits
     return ''.join(random.choices(alphanumeric, k=6))
 
+def generate_username():
+     alphanumeric = string.ascii_uppercase + string.digits
+     return 'SS'.join(random.choices(alphanumeric, k=4))
+
 # Create a Custom User Model
 
 
@@ -27,7 +31,7 @@ class User(AbstractUser):
         STAFF = "staff", "Staff"
 
     user_role = models.CharField(choices=RoleChoices.choices,max_length=20,default="Patient",error_messages={"required": "Role must be provided"},)
-    username = models.CharField(unique=True, null=False, max_length=50, blank=False)
+    username = models.CharField(null=False, max_length=50, blank=False,default=generate_username,)
     email = models.EmailField(unique=True, null=False, blank=False)
     related_clinic_name = models.ForeignKey('ClinicReg', on_delete=models.CASCADE, blank=True, null=True)
     next_of_kin = models.ForeignKey('NextOfKin', on_delete=models.CASCADE, blank=True, null=True)
