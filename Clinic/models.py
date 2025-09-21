@@ -1,4 +1,5 @@
 from django.db import models
+from django_tenants.models import TenantMixin, DomainMixin
 from ckeditor.fields import RichTextField
 import random
 import uuid
@@ -28,3 +29,23 @@ class Blog(models.Model):
 
     def __str__(self):
         return f'{self.blog_id}'
+
+class Tenant(TenantMixin):
+     name = models.CharField(max_length=100)
+     subdomain = models.CharField(max_length=50)
+     paid_until = models.DateField()
+     on_trial = models.BooleanField(default=True)
+     created_on = models.DateField(auto_now_add=True)
+     clinic_name = models.CharField(max_length=200)
+     clinic_owner_name = models.CharField(max_length=200)
+     subscription_plan = models.CharField(max_length=50, default='basic')
+     max_users = models.IntegerField(default=5)
+     max_patients = models.IntegerField(default=500)
+     auto_create_schema = True
+
+
+class Domain(DomainMixin):
+    pass
+
+# Create your models here.
+

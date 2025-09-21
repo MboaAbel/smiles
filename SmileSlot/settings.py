@@ -26,7 +26,7 @@ ALLOWED_HOSTS = [
  ]
 if DEBUG:
      ALLOWED_HOSTS += [
-         '127.0.0.1',
+         'localhost',
          '.localhost',
          '.onrender.com'
      ]
@@ -55,7 +55,7 @@ USE_STRIPE_V2 = True
 SHARED_APPS = (
     # required
     "django_tenants",       # must be first
-    "tenants",              # your tenant model app: Client/Domain
+    "Clinic",              # your tenant model app: Client/Domain
 
     # minimal django core that should be in public
     "django.contrib.contenttypes",
@@ -79,7 +79,6 @@ SHARED_APPS = (
 
     # Your project apps (tenant-specific data)
     "Commando",
-    "Clinic",
     "Accounts",
     "saas",
     "mpesa",
@@ -99,33 +98,23 @@ TENANT_APPS = (
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 # Link to the tenant model
-TENANT_MODEL = "tenants.Tenant"            # app_label.ModelName
-TENANT_DOMAIN_MODEL = "tenants.Domain"
+TENANT_MODEL = "Clinic.Tenant"            # app_label.ModelName
+TENANT_DOMAIN_MODEL = "Clinic.Domain"
 # ----------------------------
 
+
+# Keep cookies host-specific so public and tenant sessions don't collide:
+SESSION_COOKIE_DOMAIN = None
+CSRF_COOKIE_DOMAIN = None
+
+# Optional: make it easy to change tenant-app label if you have custom name
+TENANTS_APP_LABEL = "Clinic"   # <-- your app label that contains Tenant model
 
 PUBLIC_SCHEMA_NAME = 'public'
 BASE_DOMAIN = 'smileslot.onrender.com'
 
 
 SITE_ID = 1
-
-PWA_APP_NAME = 'SmileSlot'
-PWA_APP_DESCRIPTION = "Tumebeba System Focus na Smiles, a Mboa Technologies"
-PWA_APP_THEME_COLOR = '#0A0302'
-PWA_APP_BACKGROUND_COLOR = '#ffffff'
-PWA_APP_DISPLAY = 'standalone'
-PWA_APP_SCOPE = '/'
-PWA_APP_ORIENTATION = 'any'
-PWA_APP_START_URL = '/'
-PWA_APP_STATUS_BAR_COLOR = 'default'
-PWA_APP_ICONS = [
-    {
-        'src': '/static/icon/smileslot.png',
-        'sizes': '160x160'
-    }
-]
-
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
