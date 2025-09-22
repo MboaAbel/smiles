@@ -2,7 +2,11 @@ from django.apps import apps
 from django.core.cache import cache
 from django.conf import settings
 
-from helpers.db.schemas import use_public_schema, activate_tenent_schema
+from helpers.db.schemas import (
+    use_public_schema,
+    activate_tenent_schema,  # keep your existing function name
+)
+from helpers.db import statements as db_statements
 
 
 class SchemaTenantMiddleware:
@@ -12,133 +16,104 @@ class SchemaTenantMiddleware:
     def __call__(self, request):
         host = request.get_host()
         host_portless = host.split(":")[0].lower()
-        # Decide "subdomain candidate" (first label) for backwards compatibility
-        subdomain_candidate = host_portless.split(".", 1)[0] if "." in host_portless else None
+        subdomain = self._extract_subdomain(host_portless)
 
-        schema_name, tenant_active = self.get_schema_name(hostname=host_portless, subdomain=subdomain_candidate)
-
+        schema_name, tenant_active = self.get_schema_name(subdomain=subdomain)
+        # activate tenant schema for the request lifecycle
         try:
             activate_tenent_schema(schema_name)
         except Exception as e:
+            # if schema activation fails, log to console for dev debugging
             print(f"[SchemaTenantMiddleware] activate_tenent_schema({schema_name}) failed: {e}")
 
         request.tenant_active = tenant_active
         request.tenant_schema = schema_name
         return self.get_response(request)
 
-    def get_schema_name(self, hostname: str, subdomain: str | None = None):
+    def _extract_subdomain(self, host):
         """
-        Return (schema_name, tenant_active_bool).
-        Lookup strategy:
-          1) If hostname is public (localhost/127.0.0.1) => public
-          2) Cached (by full hostname)
-          3) In public schema:
-             a) If Tenant model has 'subdomain' field -> Tenant.objects.get(subdomain=subdomain)
-             b) Else try to find Domain model or Tenant.domains relation matching full hostname
+        Returns the subdomain string when host looks like <subdomain>.domain...
+        Returns None for public hosts like 'localhost' or '127.0.0.1' or single-label hosts.
+        Examples:
+            'mboa.localhost' -> 'mboa'
+            'mboa.smileslot.onrender.com' -> 'mboa'
+            'localhost' -> None
+            '127.0.0.1' -> None
         """
-        # 1) public hosts
-        if hostname in ("localhost", "127.0.0.1"):
+        # treat obvious public hosts as no-subdomain
+        if host in ("localhost", "127.0.0.1"):
+            return None
+
+        parts = host.split(".")
+        if len(parts) == 1:
+            return None  # single-label host -> public
+        # otherwise first label is candidate subdomain
+        return parts[0]
+
+    def get_schema_name(self, subdomain=None):
+        """
+        Returns (schema_name: str, tenant_active: bool).
+        tenant_active == True only if we found a tenant record for subdomain.
+        """
+        # If no subdomain -> public site
+        if subdomain is None:
             return "public", False
 
-        cache_key = f"subdomain_schema:{hostname}"
-        cache_valid_key = f"subdomain_valid_schema:{hostname}"
-        cached_schema = cache.get(cache_key)
-        cached_valid = cache.get(cache_valid_key)
-        if cached_schema is not None and cached_valid is not None:
-            return cached_schema, bool(cached_valid)
+        cache_subdomain_key = f"subdomain_schema:{subdomain}"
+        cache_subdomain_valid_key = f"subdomain_valid_schema:{subdomain}"
+        cache_subdomain_val = cache.get(cache_subdomain_key)
+        cache_subdomain_valid_val = cache.get(cache_subdomain_valid_key)
+
+        if cache_subdomain_val is not None and cache_subdomain_valid_val is not None:
+            # cached schema name (string) and bool
+            return cache_subdomain_val, bool(cache_subdomain_valid_val)
 
         schema_name = "public"
         tenant_active = False
 
+        # We need to look up tenant from the public schema
         with use_public_schema():
             TenantModel = None
             tried_labels = []
-            # candidate app labels to look for models in
+            # Try a few app labels in case your app config label differs
             candidate_labels = [
                 getattr(settings, "TENANTS_APP_LABEL", None),
                 "clinic",
                 "Clinic",
                 "tenants",
+                "tenancy",
             ]
-            # uniquify
+            # keep unique and remove None
             candidate_labels = [l for i, l in enumerate(candidate_labels) if l and l not in candidate_labels[:i]]
-
-            # find Tenant model
             for label in candidate_labels:
                 try:
                     TenantModel = apps.get_model(label, "Tenant")
-                    tenant_app_label = label
                     break
                 except LookupError:
                     tried_labels.append(label)
                     TenantModel = None
 
             if TenantModel is None:
-                print("[SchemaTenantMiddleware] Tenant model not found. Tried labels:", tried_labels)
+                # helpful debug output in dev
+                print(
+                    "[SchemaTenantMiddleware] Tenant model not found. Tried labels:",
+                    tried_labels,
+                )
             else:
-                # Inspect fields to know whether 'subdomain' exists
-                field_names = [f.name for f in TenantModel._meta.get_fields()]
+                try:
+                    obj = TenantModel.objects.get(subdomain=subdomain)
+                    schema_name = obj.schema_name
+                    tenant_active = True
+                except TenantModel.DoesNotExist:
+                    # no tenant with that subdomain; leave schema_name='public'
+                    print(f"[SchemaTenantMiddleware] subdomain '{subdomain}' does not exist as Tenant")
+                except Exception as e:
+                    # unexpected DB error
+                    print(f"[SchemaTenantMiddleware] error fetching Tenant for '{subdomain}': {e}")
 
-                # Strategy A: Tenant has a 'subdomain' field
-                if "subdomain" in field_names and subdomain:
-                    try:
-                        obj = TenantModel.objects.get(subdomain=subdomain)
-                        schema_name = obj.schema_name
-                        tenant_active = True
-                    except TenantModel.DoesNotExist:
-                        print(f"[SchemaTenantMiddleware] no Tenant with subdomain='{subdomain}'")
-                    except Exception as e:
-                        print(f"[SchemaTenantMiddleware] error fetching Tenant by subdomain: {e}")
-
-                # Strategy B: Try Domain model lookup (full hostname)
-                if not tenant_active:
-                    DomainModel = None
-                    try:
-                        # First try domain model inside same app
-                        DomainModel = apps.get_model(tenant_app_label, "Domain")
-                    except LookupError:
-                        # try a few common alternative labels
-                        for alt_label in ("tenants", "domains", "clinic", "Clinic"):
-                            try:
-                                DomainModel = apps.get_model(alt_label, "Domain")
-                                break
-                            except LookupError:
-                                DomainModel = None
-
-                    if DomainModel is not None:
-                        # try to find Domain record matching the full hostname
-                        try:
-                            # assume Domain has a 'domain' field and FK to tenant named 'tenant' or similar;
-                            domain_obj = DomainModel.objects.filter(domain__iexact=hostname).first()
-                            if domain_obj:
-                                # if Domain points directly to Tenant via a 'tenant' FK
-                                tenant_candidate = getattr(domain_obj, "tenant", None)
-                                if tenant_candidate is not None:
-                                    schema_name = tenant_candidate.schema_name
-                                    tenant_active = True
-                                else:
-                                    # Maybe Domain is reverse-related via 'domains' on Tenant
-                                    # Try finding tenant via TenantModel relation
-                                    t = TenantModel.objects.filter(domains__domain__iexact=hostname).first()
-                                    if t:
-                                        schema_name = t.schema_name
-                                        tenant_active = True
-                        except Exception as e:
-                            print(f"[SchemaTenantMiddleware] error looking up Domain for '{hostname}': {e}")
-                    else:
-                        # As last resort, try TenantModel relation 'domains' directly
-                        if "domains" in field_names:
-                            try:
-                                t = TenantModel.objects.filter(domains__domain__iexact=hostname).first()
-                                if t:
-                                    schema_name = t.schema_name
-                                    tenant_active = True
-                            except Exception as e:
-                                print(f"[SchemaTenantMiddleware] error querying Tenant.domains for '{hostname}': {e}")
-
-        # cache results (short TTL)
-        cache_ttl = getattr(settings, "TENANT_CACHE_TTL", 60)
-        cache.set(cache_key, schema_name, cache_ttl)
-        cache.set(cache_valid_key, tenant_active, cache_ttl)
+        # cache results (short TTL during development)
+        cache_ttl = getattr(settings, "TENANT_CACHE_TTL", 60)  # seconds
+        cache.set(cache_subdomain_key, schema_name, cache_ttl)
+        cache.set(cache_subdomain_valid_key, tenant_active, cache_ttl)
 
         return schema_name, tenant_active
