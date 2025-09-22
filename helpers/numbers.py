@@ -19,15 +19,15 @@ def shorten_number(value):
             suffix = 'K'
         else:
             return str(value)
-        
+
         # Round the formatted value
         formatted_value = round(formatted_value, 1)
-        
+
         # Check if the formatted value is a whole number
         if formatted_value.is_integer():
             return '{:.0f}{}'.format(formatted_value, suffix)
         else:
             return '{:.1f}{}'.format(formatted_value, suffix)
-        
+
     except (ValueError, TypeError):
         return str(value)

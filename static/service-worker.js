@@ -1,10 +1,10 @@
-const CACHE_NAME = 'SmileSlot-v1.0';
+const CACHE_NAME = 'SmileSlot-v1.5';
 const urlsToCache = [
   '/',
   '/static/css/styles.css',
   '/static/app.js',
   '/static/11_11.js',
-  '/static/icon/NrQmjK01.svg',
+  '/static/icon/smileslot.png',
   '/offline'
 ];
 

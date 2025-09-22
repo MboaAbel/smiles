@@ -14,8 +14,8 @@ function scheduleNotification() {
 
       setTimeout(() => {
         new Notification("🦷 SmileSlot Reminder", {
-          body: "Time to check today’s bookings and smiles!",
-          icon: "/static/images/logo.png"
+          body: "Time to check today’s bookings and smile!",
+          icon: "/static/icon/smileslot.png"
         });
 
         // Schedule next day recursively

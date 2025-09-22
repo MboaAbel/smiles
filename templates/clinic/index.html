@@ -8,15 +8,20 @@
   <meta name="theme-colour"  content="white"> 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmileSlot - We Are Best Dental Service</title>
+  <title>SmileSlot - Tumebeba System wewe focus na smiles</title>
 
   <!-- 
     - favicon
   -->
   <link rel="manifest" href="{% static 'manifest.json' %}">
-  <link rel="shortcut icon" sizes="76x76"  href="{% static 'icon/Junction_Dental.png'%}" type="image/svg+xml">
+  <link rel="shortcut icon" sizes="76x76"  href="{% static 'icon/smileslot.png'%}" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta property="og:title" content="SmileSlot aproduct by Mboa Technologies">
+  <meta property="og:description" content="SmileSlot - Tumebeba system wewe focus na smiles">
+  <meta property="og:image" content="https://smileslot.onrender.com/static/clinic/images/hero-banner.png ">
+  <meta property="og:url" content="https://smileslot.onrender.com/Mpesa/">
+  <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap"rel="stylesheet">
   <!-- 
@@ -33,8 +38,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap"rel="stylesheet">
 </head>
-<button id="install-btn" class="btn" style="display: none;position: fixed;bottom: 20px;right: 20px;padding: 12px 20px;background-color: #0fa3b1;color: #fff;border: none;border-radius: 30px;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);font-size: 16px;font-weight: 600;cursor: pointer;transition: background 0.3s ease;z-index: 9999;">Install App</button>
-
 {% block body %}
 <body id="top">
         
@@ -56,6 +59,9 @@
       <!--  - #DOCTOR-->
       {% include 'clinic/includes/blog.html' %}
       <!-- - #CTA-->
+
+<button id="install-btn" class="btn" style="display: none;position: fixed;bottom: 20px;right: 20px;padding: 12px 20px;background-color:#0fa3b1;color: #fff;border: none;border-radius: 30px;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);font-size:16px;font-weight: 600;cursor: pointer;transition: background 0.3s ease;z-index: 9999;">Install App</button>
+
       <section class="section cta" aria-label="cta">
         <div class="container">
 
@@ -76,14 +82,12 @@
 
      <!--  - #DOCTOR-->
       {% include 'clinic/includes/doctors.html' %}
-      <!-- - #CTA-->
+     <!-- - #CTA-->
       <!--  - #BLOG-->
 <!--      {% include 'clinic/includes/blog.html' %}-->
     </article>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-      <a class="back-top-btn"
- href="https://wa.me/254708534184?text=Hello!%20Junction%20Dental%20would%20like%20to%20inquire%20about%20your%20dental%20services.%20Can%20you%20please%20assist%20me?"
-  style="position:fixed;width:40px;height:40px;bottom:40px;right:40px;background-color:#25d366;color:#FFF;border-radius:50px;text-align:center;font-size:30px;box-shadow: 2px 2px 3px #999;z-index:100;" class="float" target="_blank">
+      <a class="back-top-btn"href="https://wa.me/254708534184?text=Hello!%20Junction%20Dental%20would%20like%20to%20inquire%20about%20your%20dental%20services.%20Can%20you%20please%20assist%20me?"style="position:fixed;width:40px;height:40px;bottom:40px;right:40px;background-color:#25d366;color:#FFF;border-radius:50px;text-align:center;font-size:30px;box-shadow: 2px 2px 3px #999;z-index:100;" class="float" target="_blank">
 <i class="fa fa-whatsapp my-float" style="margin-top:16px;"></i>
 </a>
   </main>
@@ -102,6 +106,16 @@
        console.log('Service Worker registration failed:', error);
       });
   }
+</script>
+
+
+ <!-- Google tag (gtag.js) -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+ <script>
+   window.dataLayer = window.dataLayer || [];
+   function gtag(){dataLayer.push(arguments);}
+   gtag('js', new Date());
+   gtag('config', 'G-XXXXXXXXXX');
 </script>
  </body>
 </html>

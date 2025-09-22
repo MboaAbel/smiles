@@ -23,14 +23,16 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = [
      '.onrender.com',
      '.localhost',
-     '.sleek.work.gd'
+     '.sleek.work.gd',
+     'sleek.work.gd'
  ]
 if DEBUG:
      ALLOWED_HOSTS += [
          'localhost',
          '.localhost',
          '.onrender.com',
-         '.sleek.work.gd'
+         '.sleek.work.gd',
+         'sleek.work.gd'
      ]
 
 
@@ -113,7 +115,7 @@ CSRF_COOKIE_DOMAIN = None
 TENANTS_APP_LABEL = "Clinic"   # <-- your app label that contains Tenant model
 
 PUBLIC_SCHEMA_NAME = 'public'
-BASE_DOMAIN = 'smileslot.onrender.com'
+BASE_DOMAIN = 'sleek.work.gd'
 
 
 SITE_ID = 1
@@ -138,7 +140,7 @@ MIDDLEWARE = [
 
 
 DEFAULT_HOST = "www"
-PARENT_HOST = "localhost:8000"
+PARENT_HOST = "localhost:4004"
 ROOT_HOSTCONF = "SmileSlot.hosts"
 ENTERPRISES_URLCONF = "SmileSlot.urls"
 ROOT_URLCONF = 'SmileSlot.urls'
@@ -365,16 +367,16 @@ DEBUG_TOOLBAR_CONFIG = {
      "IS_RUNNING_TESTS": False,
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://smileslot.onrender.com',  'http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['https://sleek.work.gd',  'http://127.0.0.1:8000']
 
-# SECURE_SSL_REDIRECT = True
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 LOGGING = {
     'version': 1,
