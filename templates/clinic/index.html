@@ -4,16 +4,13 @@
 <html lang="en">
 
 <head>
- <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <link rel="manifest" href="{% static 'manifest.json' %}">
   <meta name="theme-colour"  content="white"> 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmileSlot - Tumebeba System wewe focus na smiles</title>
 
-  <!-- 
-    - favicon
-  -->
-  <link rel="manifest" href="{% static 'manifest.json' %}">
   <link rel="shortcut icon" sizes="76x76"  href="{% static 'icon/smileslot.png'%}" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +19,8 @@
   <meta property="og:image" content="https://smileslot.onrender.com/static/clinic/images/hero-banner.png ">
   <meta property="og:url" content="https://smileslot.onrender.com/Mpesa/">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="/static/icon/smileslot-192.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&display=swap"rel="stylesheet">
   <!-- 
@@ -60,7 +59,7 @@
       {% include 'clinic/includes/blog.html' %}
       <!-- - #CTA-->
 
-<button id="install-btn" class="btn" style="display: none;position: fixed;bottom: 20px;right: 20px;padding: 12px 20px;background-color:#0fa3b1;color: #fff;border: none;border-radius: 30px;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);font-size:16px;font-weight: 600;cursor: pointer;transition: background 0.3s ease;z-index: 9999;">Install App</button>
+<button id="install-btn" class="btn" style="display: none;position: fixed;bottom: 50px;right: 20px;padding: 12px 20px;background-color:#0fa3b1;color: #fff;border: none;border-radius: 30px;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);font-size:16px;font-weight: 600;cursor: pointer;transition: background 0.3s ease;z-index: 9999;">Install App</button>
 
       <section class="section cta" aria-label="cta">
         <div class="container">
@@ -97,17 +96,14 @@
  
           {% include 'clinic/includes/scripts.html' %}
 <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("{% static 'service-worker.js' %}")
-      .then(registration => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      })
-      .catch(error => {
-       console.log('Service Worker registration failed:', error);
-      });
-  }
-</script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+    .then(reg => {
+      console.log('SW registered', reg);
+    }).catch(err => console.error('SW register failed', err));
+}
 
+</script>
 
  <!-- Google tag (gtag.js) -->
  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>

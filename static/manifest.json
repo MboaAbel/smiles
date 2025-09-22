@@ -1,6 +1,6 @@
 {
-  "name": "SmileSlot - a product from mboa technologies ",
-  "short_name": "smileslot",
+  "name": "SmileSlot - a product from mboa technologies",
+  "short_name": "SmileSlot",
   "description": "Tumebeba System wewe focus na smiles",
   "lang": "en",
   "start_url": "/?source=pwa",
@@ -11,53 +11,22 @@
   "background_color": "#ffffff",
   "icons": [
     {
-      "src": "/icon/smileslot.png",
+      "src": "/static/icon/smileslot-72.png",
       "sizes": "72x72",
       "type": "image/png",
-      "purpose" : "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/icon/smileslot.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose" : "any maskable"
-    },
-    {
-      "src": "/icon/smileslot.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose" : "any maskable"
-    },
-    {
-      "src": "/icon/smileslot.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose" : "any maskable"
-    },
-    {
-      "src": "/icon/smileslot.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose" : "any maskable"
-    },
-    {
-      "src": "/icon/smileslot.png",
+      "src": "/static/icon/smileslot-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose" : "any maskable"
+      "purpose": "any maskable"
     },
     {
-      "src": "/icon/smileslot.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose" : "any maskable"
-    },
-    {
-      "src": "/icon/smileslot.png",
+      "src": "/static/icon/smileslot-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose" : "any maskable"
+      "purpose": "any maskable"
     }
   ]
 }
-
