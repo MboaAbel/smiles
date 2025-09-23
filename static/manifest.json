@@ -1,6 +1,6 @@
 {
   "name": "SmileSlot - a product from mboa technologies",
-  "short_name": "SmileSlot",
+  "short_name": "SmileSlot-V01.01",
   "description": "Tumebeba System wewe focus na smiles",
   "lang": "en",
   "start_url": "/?source=pwa",
@@ -11,19 +11,19 @@
   "background_color": "#ffffff",
   "icons": [
     {
-      "src": "/static/icon/smileslot-72.png",
+      "src": "/static/icon/smiles.jpg",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/static/icon/smileslot-192.png",
+      "src": "/static/icon/smiles.jpg",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/static/icon/smileslot-512.png",
+      "src": "/static/icon/smiles.jpg",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

@@ -1,11 +1,11 @@
-const CACHE_NAME = 'SmileSlot-v1.6'; // bump version on changes
+const CACHE_NAME = 'SmileSlot-V01.01'; // bump version on changes
 const OFFLINE_URL = '/offline';      // be consistent (no trailing slash)
 const urlsToCache = [
   '/',
   '/static/css/styles.css',
   '/static/app.js',
   '/static/11_11.js',
-  '/static/icon/smileslot.png',
+  '/static/icon/smiles.jpg',
   OFFLINE_URL
 ];
 
@@ -76,7 +76,7 @@ self.addEventListener('fetch', event => {
         }).catch(() => {
           // fallback for images to a placeholder (optional)
           if (req.destination === 'image') {
-            return caches.match('/static/icon/smileslot.png');
+            return caches.match('/static/icon/smiles.jpg');
           }
           return caches.match(OFFLINE_URL);
         }))
