@@ -7,18 +7,18 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#070E16",
+  "background_color": "#070E16",
   "icons": [
 
     {
-      "src": "/static/icon/smiles.jpg",
+      "src": "/static/icon/smiles.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/static/icon/smiles.jpg",
+      "src": "/static/icon/smiles.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
