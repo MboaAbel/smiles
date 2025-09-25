@@ -140,7 +140,7 @@ MIDDLEWARE = [
 
 
 DEFAULT_HOST = "www"
-PARENT_HOST = "localhost:4004"
+PARENT_HOST = "sleek.work.gd/"
 ROOT_HOSTCONF = "SmileSlot.hosts"
 ENTERPRISES_URLCONF = "SmileSlot.urls"
 ROOT_URLCONF = 'SmileSlot.urls'
@@ -236,7 +236,7 @@ if REDIS_CACHE_URL is not None:
          }
      }
 
-TATABASES = {
+DATABASES_psql = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
@@ -249,7 +249,12 @@ TATABASES = {
     }
 }
 
-
+DATABASES_mysql = {
+         'default': {
+             'ENGINE': 'django.db.backends.sqlite3',
+             'NAME': BASE_DIR / 'db.sqlite3',
+         }
+     }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
