@@ -36,7 +36,7 @@ class User(AbstractUser):
     related_clinic_name = models.ForeignKey('ClinicReg', on_delete=models.CASCADE, blank=True, null=True)
     next_of_kin = models.ForeignKey('NextOfKin', on_delete=models.CASCADE, blank=True, null=True)
     specialization = models.CharField(max_length=19, blank=True, choices=SPECIALIZATION_CHOICES,)
-    profile_photo = models.ImageField(upload_to='profile_photos/', null=False, default='icon/bondijunction_dentalclinic_logo-300x258.jpg', blank=False)
+    profile_photo = models.ImageField(upload_to='profile_photos/', null=False, default='icon/smile.png', blank=False)
     national_id = models.CharField(max_length=15, unique=True, blank=True, null=True)
     member_code = models.CharField(default=generate_service_id, max_length=6, unique=True)
     #mobile_number = PhoneNumberField(max_length=16,blank=False, null=True, unique=True)
