@@ -25,6 +25,9 @@ from django.views.generic import UpdateView, DetailView, View, CreateView
 def index(request):
     return render(request, 'account/signup.html')
 
+def for_yee(request):
+     return render(request, 'account/4yee.html')
+
 
 def register(request):
     if request.method == 'POST':

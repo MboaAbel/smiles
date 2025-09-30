@@ -16,6 +16,7 @@ urlpatterns = [
     path('profile/view', views.user_profile_view, name='user_profile_view'),
     path("appointment/<int:booking_id>/review/",AddReviewView.as_view(),name="add-review",),
     path('login/', views.UserLoginView.as_view(), name='login'),
+    path('4yee/', views.for_yee, name='4yee'),
     path('logout/', views.user_logout_view, name='logout'),
     path('signup/', views.register, name='register'),
     path('password-change/', views.UserPasswordChangeView.as_view(), name='password_change'),

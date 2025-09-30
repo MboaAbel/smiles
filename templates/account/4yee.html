@@ -1,0 +1,117 @@
+{% extends 'nav/taskbar.html' %}
+{% load i18n static  %}
+{% block main %}
+ 
+{% include 'account/includes/navigation-fullscreen.html' %}
+
+ <link rel="stylesheet" href="{% static 'clinic/css/style.css'%}">
+  <section class="section doctor" aria-label="doctor">
+       <div class="container">
+           <p class="section-subtitle text-center">I am a ?</p>
+           <ul class="has-scrollbar">
+ 
+ 
+ 
+ 
+            <!-- Dentist Widget -->
+            <li class="scrollbar-item">
+                <div class="doctor-card">
+                    <div  href="/" class="card-banner img-holder" style="--width: 460; --height: 500; background-color: rgba(0,0,0,0.1); border-radius: 40px; backdrop-filter: bl>
+                        <img src="{{ doctor.profile_photo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
+                    </div>
+                    <h3 class="h3">
+                        <a href="/" class="card-title">Dentist</a>
+                    </h3>
+                    <p class="card-subtitle">{{ doctor.profile.specialization }}</p>
+                    <ul class="card-social-list">
+                        <li>
+                            <a href="/" class="card-social-link">
+                                <ion-icon name="logo-facebook"></ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-social-link">
+                                <ion-icon name="logo-twitter"></ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-social-link">
+                                <ion-icon name="logo-instagram"></ion-icon>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+ 
+            <!-- /Dentist Widget -->
+ 
+ 
+         <!-- Clinic  Widget -->
+         <li class="scrollbar-item">                     
+  			 <div class="doctor-card">
+                  <div  href="/" class="card-banner img-holder" style="--width: 460; --height: 500; background-color: rgba(0,0,0,0.1); border-radius: 40px;backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); z-index: 10; display: flex; box-shadow: 20px 20px 80px 20px rgba(0,0,0,0.1);">
+                      <img src="{{ doctor.profile_photo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
+                 </div>
+                  <h3 class="h3">
+                      <a href="/" class="card-title">Dental Studio</a>
+                  </h3>
+                  <p class="card-subtitle">{{ doctor.profile.specialization }}</p>
+                  <ul class="card-social-list">
+                      <li>
+                          <a href="/" class="card-social-link">
+                              <ion-icon name="logo-facebook"></ion-icon>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#" class="card-social-link">
+                              <ion-icon name="logo-twitter"></ion-icon>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#" class="card-social-link">
+                              <ion-icon name="logo-instagram"></ion-icon>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </li>
+
+           <!-- /Clinic Widget -->
+
+           <!-- General User Widget -->
+             <li class="scrollbar-item">
+           <div class="doctor-card">
+                     <div  href="/" class="card-banner img-holder" style="--width: 460; --height: 500; background-color: rgba(0,0,0,0.1); border-radius: 40px; backdrop-filter: b>
+                          <img src="{{ doctor.profile_photo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
+                     </div>
+                   <h3 class="h3">
+                        <a href="/" class="card-title">General User</a>
+                    </h3>
+                    <p class="card-subtitle">{{ doctor.profile.specialization }}</p>
+                     <ul class="card-social-list">
+                          <li>
+                              <a href="/" class="card-social-link">
+                                  <ion-icon name="logo-facebook"></ion-icon>
+                              </a>
+                         </li>
+                         <li>
+                             <a href="#" class="card-social-link">      
+                  		    <ion-icon name="logo-twitter"></ion-icon>
+                             </a>
+                        </li>
+                         <li>
+                             <a href="#" class="card-social-link">
+                                 <ion-icon name="logo-instagram"></ion-icon>
+                             </a>
+                         </li>
+                     </ul>
+                 </div>
+            </li>
+              <!-- /General User Widget -->
+
+
+         </ul>
+    </div>
+</section>
+ {% include 'clinic/includes/scripts.html' %}
+ {% endblock %}
