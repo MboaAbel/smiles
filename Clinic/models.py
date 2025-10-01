@@ -3,7 +3,8 @@ from django_tenants.models import TenantMixin, DomainMixin
 from ckeditor.fields import RichTextField
 import random
 import uuid
-
+# if using GeoDjango PointField
+from django.contrib.gis.db import models as geomodels
 
 class Page(models.Model):
     pagetitle = models.CharField(max_length=250)
@@ -41,6 +42,11 @@ class Tenant(TenantMixin):
      subscription_plan = models.CharField(max_length=50, default='basic')
      max_users = models.IntegerField(default=5)
      max_patients = models.IntegerField(default=500)
+     location = geomodels.PointField(geography=True, srid=4326, null=True, blank=True,
+                                   help_text="Clinic location as (lon,lat)")
+
+    # optional: human-friendly address to assist geocoding/backfill
+     clinic_address = models.TextField(blank=True, default="")
      auto_create_schema = True
 
 

@@ -13,6 +13,8 @@ urlpatterns = [
     path('clinics/', clinic_list, name='clinics'),
     path('health/', health_check, name='health-check'),
     path("clinics/<str:clinic_code>/",ClinicProfileView.as_view(),name="clinic-profile",),
+    path('api/clinics/nearby/', nearby_clinics_haversine, name='clinics-nearby'),
+#    path('api/clinics/<int:clinic_id>/services/', clinic_services, name='clinic-services'),
 
 ]
 

@@ -24,7 +24,8 @@ ALLOWED_HOSTS = [
      '.onrender.com',
      '.localhost',
      '.sleek.work.gd',
-     'sleek.work.gd'
+     'sleek.work.gd',
+     'smiles.work.gd'
  ]
 if DEBUG:
      ALLOWED_HOSTS += [
@@ -32,7 +33,8 @@ if DEBUG:
          '.localhost',
          '.onrender.com',
          '.sleek.work.gd',
-         'sleek.work.gd'
+         'sleek.work.gd',
+         'smiles.work.gd'
      ]
 
 
@@ -69,6 +71,7 @@ SHARED_APPS = (
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
+    "django.contrib.gis",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -248,6 +251,8 @@ DATABASES_psql = {
         'PORT': config('DB_PORT', default='5432'),
     }
 }
+
+ORIGINAL_BACKEND = "django.contrib.gis.db.backends.postgis"
 
 DATABASES_mysql = {
          'default': {

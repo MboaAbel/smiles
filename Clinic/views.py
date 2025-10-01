@@ -15,6 +15,100 @@ from Accounts.models import User
 from django.views.generic import (ListView,DetailView,View,CreateView, )
 from doctors.models.general import *
 from .forms import BlogForm
+import math
+from django.db import connection
+from django.views.decorators.http import require_GET
+
+EARTH_KM = 6371.0
+
+def haversine(lat1, lon1, lat2, lon2):
+    # returns distance in km
+    # using radians arithmetic - (we won't use it in SQL version below)
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    return EARTH_KM * c
+
+@require_GET
+def nearby_clinics_haversine(request):
+    try:
+        lat = float(request.GET.get('lat'))
+        lng = float(request.GET.get('lng'))
+    except (TypeError, ValueError):
+        return JsonResponse({"error": "lat and lng required"}, status=400)
+
+    radius_km = float(request.GET.get('radius_km', 5.0))
+    limit = int(request.GET.get('limit', 50))
+
+    # Efficient prefilter: compute bounding box to reduce rows scanned
+    # approximate lat/lng delta for radius
+    lat_delta = radius_km / 111.0  # ~111 km per degree lat
+    lng_delta = radius_km / max(0.00001, (111.320 * math.cos(math.radians(lat))))
+
+    min_lat = lat - lat_delta
+    max_lat = lat + lat_delta
+    min_lng = lng - lng_delta
+    max_lng = lng + lng_delta
+
+    sql = """
+    SELECT id, name, lat, lng, address
+    FROM clinics_clinic
+    WHERE lat BETWEEN %s AND %s AND lng BETWEEN %s AND %s
+    LIMIT 1000;
+    """
+    params = [min_lat, max_lat, min_lng, max_lng]
+    with connection.cursor() as c:
+        c.execute(sql, params)
+        rows = c.fetchall()
+
+    clinics = []
+    for r in rows:
+        cid, name, plat, plng, addr = r
+        if plat is None or plng is None:
+            continue
+        dist = haversine(lat, lng, plat, plng)
+        if dist <= radius_km:
+            clinics.append({
+                "id": cid,
+                "name": name,
+                "address": addr or "",
+                "lat": plat,
+                "lng": plng,
+                "distance_km": round(dist, 2),
+                # top_services: fetch top 3 services by price or popularity (simple example)
+                "top_services": []  # fill below
+            })
+
+    # fetch top_services for these clinic ids in one query
+    clinic_ids = [c["id"] for c in clinics]
+    if clinic_ids:
+        placeholders = ",".join(["%s"] * len(clinic_ids))
+        svc_sql = f"""
+        SELECT id, clinic_id, name, duration_mins, price
+        FROM clinics_service
+        WHERE clinic_id IN ({placeholders})
+        ORDER BY clinic_id, id
+        """
+        with connection.cursor() as c:
+            c.execute(svc_sql, clinic_ids)
+            svc_rows = c.fetchall()
+        svc_by_clinic = {}
+        for sid, cid, sname, sdur, sprice in svc_rows:
+            svc_by_clinic.setdefault(cid, []).append({
+                "id": sid, "name": sname, "duration_mins": sdur, "price": float(sprice) if sprice is not None else None
+            })
+        for cl in clinics:
+            cl["top_services"] = svc_by_clinic.get(cl["id"], [])[:3]
+
+    # sort by distance
+    clinics.sort(key=lambda x: x["distance_km"])
+    # limit
+    clinics = clinics[:limit]
+
+    return JsonResponse(clinics, safe=False)
+
+
 
 def health_check(request):
     return HttpResponse("OK", status=200)
