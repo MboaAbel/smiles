@@ -20,7 +20,7 @@
                         <img src="{{ doctor.profile_photo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
                     </div>
                     <h3 class="h3">
-                        <a href="/" class="card-title">Dentist</a>
+                           <a href="{% url 'register' %}" class="card-title">Dentist</a>
                     </h3>
                     <p class="card-subtitle">{{ doctor.profile.specialization }}</p>
                     <ul class="card-social-list">
@@ -53,7 +53,7 @@
                       <img src="{{ doctor.profile_photo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
                  </div>
                   <h3 class="h3">
-                      <a href="/" class="card-title">Dental Studio</a>
+                      <a href="{% url 'register' %}" class="card-title">Dental Studio</a>
                   </h3>
                   <p class="card-subtitle">{{ doctor.profile.specialization }}</p>
                   <ul class="card-social-list">
@@ -85,7 +85,7 @@
                           <img src="{{ doctor.profile_photo.url }}"  class="img-fluid" width="460" height="500" loading="lazy" alt="{{ doctor.get_full_name }}" class="img-cover">
                      </div>
                    <h3 class="h3">
-                        <a href="/" class="card-title">General User</a>
+                        <a href="{% url 'register' %}" class="card-title">General User</a>
                     </h3>
                     <p class="card-subtitle">{{ doctor.profile.specialization }}</p>
                      <ul class="card-social-list">
