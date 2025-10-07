@@ -25,7 +25,7 @@ ALLOWED_HOSTS = [
      '.sleek.work.gd',
      'sleek.work.gd',
      'smiles.work.gd',
-     'https://www.smiles.work.gd/'
+     'www.smiles.work.gd'
  ]
 if DEBUG:
      ALLOWED_HOSTS += [
@@ -35,7 +35,7 @@ if DEBUG:
          '.sleek.work.gd',
          'sleek.work.gd',
          'smiles.work.gd',
-         'https://www.smiles.work.gd/'
+         'www.smiles.work.gd'
      ]
 
 
