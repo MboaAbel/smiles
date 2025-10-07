@@ -24,7 +24,8 @@ ALLOWED_HOSTS = [
      '.localhost',
      '.sleek.work.gd',
      'sleek.work.gd',
-     'smiles.work.gd'
+     'smiles.work.gd',
+     'https://www.smiles.work.gd/'
  ]
 if DEBUG:
      ALLOWED_HOSTS += [
@@ -33,7 +34,8 @@ if DEBUG:
          '.onrender.com',
          '.sleek.work.gd',
          'sleek.work.gd',
-         'smiles.work.gd'
+         'smiles.work.gd',
+         'https://www.smiles.work.gd/'
      ]
 
 
@@ -142,7 +144,7 @@ MIDDLEWARE = [
 
 
 DEFAULT_HOST = "www"
-PARENT_HOST = "sleek.work.gd/"
+PARENT_HOST = "smiles.work.gd/"
 ROOT_HOSTCONF = "SmileSlot.hosts"
 ENTERPRISES_URLCONF = "SmileSlot.urls"
 ROOT_URLCONF = 'SmileSlot.urls'
